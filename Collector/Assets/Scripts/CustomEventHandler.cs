@@ -10,17 +10,24 @@ public class CustomEventHandler : MonoBehaviour
     {
         instance = this;
     }
-
-    // custom Spawn Turret Event
-    public event EventHandler<PlaceUnit> PlaceUnitOnField;
-    public class PlaceUnit : EventArgs
+    public class UnitInformation : EventArgs
     {
         public GameObject unit;
         public Vector3 worldPosition;
     }
 
+    // custom Spawn Turret Event
+    public event EventHandler<UnitInformation> PlaceUnitOnField;
+
     public void SendPlaceUnit(GameObject unit, Vector3 worldPosition)
     {
-        PlaceUnitOnField?.Invoke(this, new PlaceUnit { unit = unit, worldPosition = worldPosition});
+        PlaceUnitOnField?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition});
+    }
+
+    public event EventHandler<UnitInformation> DeleteUnitFromField;
+
+    public void DeleteUnitOnField(GameObject unit, Vector3 worldPosition)
+    {
+        DeleteUnitFromField?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition});
     }
 }

@@ -94,6 +94,13 @@ public class Map
         GetXY(out x, out y, position);
         mapGrid[x, y].unit = null;
     }
+
+    public GameObject GetUnit(Vector3 position)
+    {
+        int x, y;
+        GetXY(out x, out y, position);
+        return mapGrid[x, y].unit;
+    }
 }
 
 public class DuellMap : MonoBehaviour
@@ -149,10 +156,18 @@ public class DuellMap : MonoBehaviour
         tile.transform.position = map.GetCenteredPosition(currentMousePosition);
     }
 
-    private void PlaceUnit(object sender, CustomEventHandler.PlaceUnit args)
+    private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
         map.SetUnit(args.unit, args.worldPosition);
         args.unit.transform.position = map.GetCenteredPosition(args.worldPosition) + new Vector3(0, 0, -1) ;
+    }
+
+    private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
+    {
+        if(args.unit == map.GetUnit(args.worldPosition))
+        {
+            map.DeleteUnit(args.worldPosition);
+        }
     }
 
     public void SetUnitOnField(GameObject unit)
