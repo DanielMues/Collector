@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 609330808}
   - component: {fileID: 609330807}
   - component: {fileID: 609330806}
+  - component: {fileID: 609330810}
   m_Layer: 0
   m_Name: Square (2)
   m_TagString: Untagged
@@ -458,6 +459,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &609330810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609330805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce77e13ed43f8d245b8bf300d7f9b844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 100
+  speed: 9
+  attackdamage: 10
+  range: 1
 --- !u!1 &764824432
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +573,7 @@ GameObject:
   - component: {fileID: 1281793638}
   - component: {fileID: 1281793640}
   - component: {fileID: 1281793641}
+  - component: {fileID: 1281793642}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -666,6 +684,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063e61273a9f3748b79fb2e0a9d4bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1281793642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281793637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce77e13ed43f8d245b8bf300d7f9b844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 100
+  speed: 10
+  attackdamage: 5
+  range: 1
 --- !u!1 &1606077335
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,6 +712,7 @@ GameObject:
   - component: {fileID: 1606077338}
   - component: {fileID: 1606077337}
   - component: {fileID: 1606077336}
+  - component: {fileID: 1606077340}
   m_Layer: 0
   m_Name: Square (1)
   m_TagString: Untagged
@@ -788,3 +823,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1606077340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606077335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce77e13ed43f8d245b8bf300d7f9b844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 100
+  speed: 9
+  attackdamage: 10
+  range: 1
