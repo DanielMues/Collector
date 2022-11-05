@@ -30,4 +30,18 @@ public class CustomEventHandler : MonoBehaviour
     {
         DeleteUnitFromField?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition});
     }
+
+    public event EventHandler<UnitInformation> UnitGotClicked;
+
+    public void UnitClicked(GameObject unit, Vector3 worldPosition)
+    {
+        UnitGotClicked?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition });
+    }
+
+    public event EventHandler<UnitInformation> SwapUnit;
+
+    public void SwapSelectedUnit(GameObject unit, Vector3 worldPosition)
+    {
+        SwapUnit?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition });
+    }
 }

@@ -116,7 +116,6 @@ public class DuellMap : MonoBehaviour
     private GameObject tile;
 
     private bool hoverActivated;
-    private GameObject currentSelectedUnit;
     private CustomEventHandler customEventHandler;
 
 
@@ -126,7 +125,6 @@ public class DuellMap : MonoBehaviour
         customEventHandler = CustomEventHandler.instance;
         customEventHandler.PlaceUnitOnField += PlaceUnit;
         hoverActivated = true;
-        currentSelectedUnit = null;
         map = new Map(worldPosition, xSize, ySize, sizeX, sizeY);
         for (int x = 0; x < xSize; x++)
         {
@@ -158,8 +156,19 @@ public class DuellMap : MonoBehaviour
 
     private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
-        map.SetUnit(args.unit, args.worldPosition);
-        args.unit.transform.position = map.GetCenteredPosition(args.worldPosition) + new Vector3(0, 0, -1) ;
+        GameObject currentUnit = map.GetUnit(args.worldPosition);
+        if (currentUnit == null)
+        {
+            map.SetUnit(args.unit, args.worldPosition);
+            args.unit.transform.position = map.GetCenteredPosition(args.worldPosition) + new Vector3(0, 0, -1);
+        }
+        else
+        {
+            map.SetUnit(args.unit, args.worldPosition);
+            Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
+            args.unit.transform.position = currentMapPosition + new Vector3(0, 0, -1);
+            customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
+        }
     }
 
     private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
