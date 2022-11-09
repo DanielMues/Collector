@@ -4,8 +4,40 @@ using UnityEngine;
 
 public class UnitStats : MonoBehaviour
 {
-    public int healthPoints;
-    public int speed;
-    public int attackdamage;
-    public int range;
+    [Header("Stats")]
+    [SerializeField]
+    private int healthPoints;
+    [SerializeField]
+    private int speed;
+    [SerializeField]
+    private int attackDamage;
+    [SerializeField]
+    private int range;
+    [SerializeField]
+    private string team;
+
+    public int GetHealthPoints()
+    {
+        return healthPoints;
+    }
+
+    public int GetSpeed()
+    {
+        return speed;
+    }
+
+    public int GetAttackDamage()
+    {
+        return attackDamage;
+    }
+
+    public int GetRange()
+    {
+        return range;
+    }
+
+    public string GetTeam()
+    {
+        return team;
+    }
 }

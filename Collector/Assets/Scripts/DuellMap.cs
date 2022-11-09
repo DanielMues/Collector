@@ -51,7 +51,7 @@ public class Map
         }
     }
     
-    private void GetXY(out int x, out int y, Vector3 position)
+    public void GetXY(out int x, out int y, Vector3 position)
     {
         x = Mathf.FloorToInt((position - worldPosition).x / cellSizeX);
         y = Mathf.FloorToInt((position - worldPosition).y / cellSizeY);
@@ -99,6 +99,11 @@ public class Map
     {
         int x, y;
         GetXY(out x, out y, position);
+        return mapGrid[x, y].unit;
+    }
+
+    public GameObject GetUnit(int x, int y)
+    {
         return mapGrid[x, y].unit;
     }
 }
@@ -182,5 +187,43 @@ public class DuellMap : MonoBehaviour
     public void SetUnitOnField(GameObject unit)
     {
         hoverActivated = true;
+    }
+
+    //fighting algorithms
+
+    private List<GameObject> GetAllUnits()
+    {
+        List<GameObject> unitsOnField = new List<GameObject>();
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                GameObject currentUnit = map.GetUnit(x, y);
+                if(currentUnit != null)
+                {
+                    unitsOnField.Add(currentUnit);
+                }
+            }
+        }
+        return unitsOnField;
+    }
+
+    private GameObject FindEnemyInRange(int Range, Vector3 position, List<GameObject> units)
+    {
+        GameObject enemy = null;
+        float shortestDistance = 100000000;
+        foreach (GameObject unit in units)
+        {
+            float distance = (position - unit.transform.position).magnitude;
+            if (distance < Range && distance != 0)
+            {
+                if(enemy != null && distance < shortestDistance)
+                {
+                    enemy = unit;
+                    shortestDistance = distance;
+                }
+            }
+        }
+        return enemy;
     }
 }
