@@ -161,7 +161,7 @@ public class DuellMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (fightActivated && currentTimeBetweenUpdates > 0)
+        if (fightActivated && currentTimeBetweenUpdates <= 0)
         {
             fightEventHandler.UpdateUnitList(GetAllUnits());
             currentTimeBetweenUpdates = timeBetweenListUpdates;
@@ -211,10 +211,11 @@ public class DuellMap : MonoBehaviour
 
     //fighting algorithms
 
-    private void StartFight()
+    public void StartFight()
     {
         hoverActivated = false;
         fightActivated = true;
+        fightEventHandler.StartTheFight();
     }
 
     private List<GameObject> GetAllUnits()
@@ -232,24 +233,5 @@ public class DuellMap : MonoBehaviour
             }
         }
         return unitsOnField;
-    }
-
-    private GameObject FindEnemyInRange(int Range, Vector3 position, List<GameObject> units)
-    {
-        GameObject enemy = null;
-        float shortestDistance = 100000000;
-        foreach (GameObject unit in units)
-        {
-            float distance = (position - unit.transform.position).magnitude;
-            if (distance < Range && distance != 0)
-            {
-                if(enemy != null && distance < shortestDistance)
-                {
-                    enemy = unit;
-                    shortestDistance = distance;
-                }
-            }
-        }
-        return enemy;
     }
 }

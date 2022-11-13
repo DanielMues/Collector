@@ -8,7 +8,7 @@ public class UnitStats : MonoBehaviour
     [SerializeField]
     private int healthPoints;
     [SerializeField]
-    private int speed;
+    private float speed;
     [SerializeField]
     private int attackDamage;
     [SerializeField]
@@ -21,7 +21,7 @@ public class UnitStats : MonoBehaviour
         return healthPoints;
     }
 
-    public int GetSpeed()
+    public float GetSpeed()
     {
         return speed;
     }
@@ -39,5 +39,10 @@ public class UnitStats : MonoBehaviour
     public string GetTeam()
     {
         return team;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        healthPoints -= damage;
     }
 }

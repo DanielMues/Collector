@@ -22,4 +22,11 @@ public class FightEventHandler : MonoBehaviour
     {
         SendAllUnits?.Invoke(this, new UnitList { allUnits = unitList });
     }
+
+    public event EventHandler<EventArgs> SendStartFight;
+
+    public void StartTheFight()
+    {
+        SendStartFight?.Invoke(this, new EventArgs());
+    }
 }
