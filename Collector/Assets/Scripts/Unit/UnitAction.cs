@@ -10,7 +10,7 @@ public class UnitAction : MonoBehaviour
 
     private bool startFight;
     private float timeBetweenAttacks;
-    private float restTimeForAttack;
+    private float restTimeTillAttack;
     private GameObject currentEnemy;
 
     // Start is called before the first frame update
@@ -18,11 +18,12 @@ public class UnitAction : MonoBehaviour
     {
         fightEventHandler = FightEventHandler.instance;
         fightEventHandler.SendStartFight += StartFight;
+        fightEventHandler.SendAllUnits += UpdateUnitList;
         currentEnemy = null;
         unitList = null;
         startFight = false;
         timeBetweenAttacks = this.GetComponent<UnitStats>().GetSpeed();
-        restTimeForAttack = timeBetweenAttacks;
+        restTimeTillAttack = timeBetweenAttacks;
     }
 
     // Update is called once per frame
@@ -34,18 +35,18 @@ public class UnitAction : MonoBehaviour
             {
                 currentEnemy = FindEnemyInRange(this.GetComponent<UnitStats>().GetRange(), this.transform.position, unitList);
             }
-            else if (currentEnemy != null && restTimeForAttack <= 0)
+            else if (currentEnemy != null && restTimeTillAttack <= 0)
             {
                 currentEnemy.GetComponent<UnitStats>().TakeDamage(this.GetComponent<UnitStats>().GetAttackDamage());
+                restTimeTillAttack = timeBetweenAttacks;
             }
-            restTimeForAttack -= Time.deltaTime;
+            restTimeTillAttack -= Time.deltaTime;
         }
     }
 
     private void UpdateUnitList(object sender, FightEventHandler.UnitList args)
     {
         unitList = args.allUnits;
-        Debug.Log("list updated");
     }
 
     private void StartFight(object sender, EventArgs args)
@@ -60,7 +61,7 @@ public class UnitAction : MonoBehaviour
         foreach (GameObject unit in units)
         {
             float distance = (position - unit.transform.position).magnitude;
-            if (distance < Range && distance != 0 && distance < shortestDistance)
+            if (distance <= Range && distance != 0 && distance <= shortestDistance)
             {
                 enemy = unit;
                 shortestDistance = distance;

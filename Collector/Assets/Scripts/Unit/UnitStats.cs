@@ -33,7 +33,7 @@ public class UnitStats : MonoBehaviour
 
     public int GetRange()
     {
-        return range;
+        return range*2;
     }
 
     public string GetTeam()

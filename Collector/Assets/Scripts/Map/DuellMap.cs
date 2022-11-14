@@ -129,7 +129,7 @@ public class DuellMap : MonoBehaviour
     
     // fight
     private bool fightActivated;
-    public float timeBetweenListUpdates = 10f;
+    public float timeBetweenListUpdates = 1f;
     private float currentTimeBetweenUpdates;
 
     // Start is called before the first frame update
