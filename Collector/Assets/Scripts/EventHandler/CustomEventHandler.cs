@@ -44,4 +44,11 @@ public class CustomEventHandler : MonoBehaviour
     {
         SwapUnit?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition });
     }
+
+    public event EventHandler<EventArgs> DragAndDropSwitch;
+
+    public void DeactivateDragAndDrop()
+    {
+        DragAndDropSwitch?.Invoke(this, new EventArgs());
+    }
 }

@@ -216,6 +216,7 @@ public class DuellMap : MonoBehaviour
         hoverActivated = false;
         fightActivated = true;
         fightEventHandler.StartTheFight();
+        customEventHandler.DeactivateDragAndDrop();
     }
 
     private List<GameObject> GetAllUnits()
