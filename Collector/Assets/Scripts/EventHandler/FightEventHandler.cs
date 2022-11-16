@@ -29,4 +29,17 @@ public class FightEventHandler : MonoBehaviour
     {
         SendStartFight?.Invoke(this, new EventArgs());
     }
+
+    public class UnitMovement : EventArgs
+    {
+        public bool y_;
+        public bool up_;
+    }
+
+    public event EventHandler<UnitMovement> MoveUnit;
+
+    public void MoveTheUnit(bool y, bool up)
+    {
+        MoveUnit?.Invoke(this, new UnitMovement {y_ = y, up_ = up});
+    }
 }

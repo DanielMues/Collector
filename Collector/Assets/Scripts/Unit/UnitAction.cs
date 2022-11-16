@@ -34,6 +34,11 @@ public class UnitAction : MonoBehaviour
             if (currentEnemy == null && unitList != null)
             {
                 currentEnemy = FindEnemyInRange(this.GetComponent<UnitStats>().GetRange(), this.transform.position, unitList);
+                if(currentEnemy == null)
+                {
+                    currentEnemy = FindClosestEnemy(this.transform.position, unitList);
+                    MoveToEnemy(currentEnemy);
+                }
             }
             else if (currentEnemy != null && restTimeTillAttack <= 0)
             {
@@ -89,6 +94,31 @@ public class UnitAction : MonoBehaviour
             }
         }
         return enemy;
+    }
+
+    private void MoveToEnemy(GameObject enemy)
+    {
+        float yDifference = this.transform.position.y - enemy.transform.position.y;
+        if (yDifference > 0)
+        {
+            fightEventHandler.MoveTheUnit(true, false);
+        }
+        else if(yDifference < 0)
+        {
+            fightEventHandler.MoveTheUnit(true, true);
+        }
+        else if(yDifference == 0)
+        {
+            float xDifference = this.transform.position.x - enemy.transform.position.x;
+            if(xDifference > 0)
+            {
+                fightEventHandler.MoveTheUnit(false, false);
+            }
+            else
+            {
+                fightEventHandler.MoveTheUnit(false, true);
+            }
+        }
     }
 
 }
