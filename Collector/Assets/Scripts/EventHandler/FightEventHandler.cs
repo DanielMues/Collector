@@ -32,14 +32,36 @@ public class FightEventHandler : MonoBehaviour
 
     public class UnitMovement : EventArgs
     {
-        public bool y_;
-        public bool up_;
+        private bool y_;
+        private bool up_;
+        private GameObject unit_;
+        public UnitMovement(bool y, bool up, GameObject unit)
+        {
+            y_ = y;
+            up_ = up;
+            unit_ = unit;
+        }
+
+        public bool GetY()
+        {
+            return y_;
+        }
+
+        public bool GetUp()
+        {
+            return up_;
+        }
+
+        public GameObject GetUnit()
+        {
+            return unit_;
+        }
     }
 
     public event EventHandler<UnitMovement> MoveUnit;
 
-    public void MoveTheUnit(bool y, bool up)
+    public void MoveTheUnit(bool y, bool up, GameObject unit)
     {
-        MoveUnit?.Invoke(this, new UnitMovement {y_ = y, up_ = up});
+        MoveUnit?.Invoke(this, new UnitMovement(y, up, unit));
     }
 }

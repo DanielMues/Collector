@@ -101,22 +101,22 @@ public class UnitAction : MonoBehaviour
         float yDifference = this.transform.position.y - enemy.transform.position.y;
         if (yDifference > 0)
         {
-            fightEventHandler.MoveTheUnit(true, false);
+            fightEventHandler.MoveTheUnit(true, false, this.gameObject);
         }
         else if(yDifference < 0)
         {
-            fightEventHandler.MoveTheUnit(true, true);
+            fightEventHandler.MoveTheUnit(true, true, this.gameObject);
         }
         else if(yDifference == 0)
         {
             float xDifference = this.transform.position.x - enemy.transform.position.x;
             if(xDifference > 0)
             {
-                fightEventHandler.MoveTheUnit(false, false);
+                fightEventHandler.MoveTheUnit(false, false, this.gameObject);
             }
             else
             {
-                fightEventHandler.MoveTheUnit(false, true);
+                fightEventHandler.MoveTheUnit(false, true, this.gameObject);
             }
         }
     }
