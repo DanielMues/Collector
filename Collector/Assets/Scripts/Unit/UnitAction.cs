@@ -10,7 +10,8 @@ public class UnitAction : MonoBehaviour
 
     private bool startFight;
     private float timeBetweenAttacks;
-    private float restTimeTillAttack;
+    private float restTimeTillMove;
+    private float timeBetweenMoving;
     private GameObject currentEnemy;
 
     // Start is called before the first frame update
@@ -22,31 +23,32 @@ public class UnitAction : MonoBehaviour
         currentEnemy = null;
         unitList = null;
         startFight = false;
-        timeBetweenAttacks = this.GetComponent<UnitStats>().GetSpeed();
-        restTimeTillAttack = timeBetweenAttacks;
+        timeBetweenAttacks = this.GetComponent<UnitStats>().GetAttackSpeed();
+        timeBetweenMoving = this.GetComponent<UnitStats>().GetMoveSpeed();
+        restTimeTillMove = timeBetweenAttacks;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (startFight)
+        if (startFight && unitList != null && restTimeTillMove <= 0)
         {
-            if (currentEnemy == null && unitList != null)
+            currentEnemy = FindEnemyInRange(this.GetComponent<UnitStats>().GetRange(), this.transform.position, unitList);
+            
+            if(currentEnemy == null)
             {
-                currentEnemy = FindEnemyInRange(this.GetComponent<UnitStats>().GetRange(), this.transform.position, unitList);
-                if(currentEnemy == null)
-                {
-                    currentEnemy = FindClosestEnemy(this.transform.position, unitList);
-                    MoveToEnemy(currentEnemy);
-                }
+                currentEnemy = FindClosestEnemy(this.transform.position, unitList);
+                MoveToEnemy(currentEnemy);
+                restTimeTillMove = timeBetweenMoving;
+                currentEnemy = null;
             }
-            else if (currentEnemy != null && restTimeTillAttack <= 0)
+            else if (currentEnemy != null)
             {
                 currentEnemy.GetComponent<UnitStats>().TakeDamage(this.GetComponent<UnitStats>().GetAttackDamage());
-                restTimeTillAttack = timeBetweenAttacks;
+                restTimeTillMove = timeBetweenAttacks;
             }
-            restTimeTillAttack -= Time.deltaTime;
         }
+        restTimeTillMove -= Time.deltaTime;
     }
 
     private void UpdateUnitList(object sender, FightEventHandler.UnitList args)
