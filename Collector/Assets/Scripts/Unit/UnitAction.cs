@@ -38,9 +38,13 @@ public class UnitAction : MonoBehaviour
             if(currentEnemy == null)
             {
                 currentEnemy = FindClosestEnemy(this.transform.position, unitList);
-                MoveToEnemy(currentEnemy);
-                restTimeTillMove = timeBetweenMoving;
-                currentEnemy = null;
+                if(currentEnemy != null)
+                {
+                    Debug.Log(currentEnemy.name);
+                    MoveToEnemy(currentEnemy);
+                    restTimeTillMove = timeBetweenMoving;
+                    currentEnemy = null;
+                }
             }
             else if (currentEnemy != null)
             {
@@ -67,11 +71,14 @@ public class UnitAction : MonoBehaviour
         float shortestDistance = Range;
         foreach (GameObject unit in units)
         {
-            float distance = (position - unit.transform.position).magnitude;
-            if (distance <= Range && distance != 0 && distance <= shortestDistance)
+            if(unit != null) // prevents to access a dead unit
             {
-                enemy = unit;
-                shortestDistance = distance;
+                float distance = (position - unit.transform.position).magnitude;
+                if (distance <= Range && distance != 0 && distance <= shortestDistance)
+                {
+                    enemy = unit;
+                    shortestDistance = distance;
+                }
             }
         }
         return enemy;
@@ -83,16 +90,19 @@ public class UnitAction : MonoBehaviour
         float shortestDistance = 0;
         foreach (GameObject unit in units)
         {
-            float distance = (position - unit.transform.position).magnitude;
-            if (shortestDistance == 0)
+            if(unit != null) // prevents to access a dead unit
             {
-                shortestDistance = distance;
-                enemy = unit;
-            }
-            else if (distance < shortestDistance && distance != 0)
-            {
-                shortestDistance = distance;
-                enemy = unit;
+                float distance = (position - unit.transform.position).magnitude;
+                if (shortestDistance == 0 && distance != 0)
+                {
+                    shortestDistance = distance;
+                    enemy = unit;
+                }
+                else if (distance < shortestDistance && distance != 0)
+                {
+                    shortestDistance = distance;
+                    enemy = unit;
+                }
             }
         }
         return enemy;

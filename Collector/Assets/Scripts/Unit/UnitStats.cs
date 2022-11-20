@@ -18,6 +18,11 @@ public class UnitStats : MonoBehaviour
     [SerializeField]
     private string team;
 
+    public void Update()
+    {
+        CheckHealthPoints();
+    }
+
     public int GetHealthPoints()
     {
         return healthPoints;
@@ -51,5 +56,17 @@ public class UnitStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         healthPoints -= damage;
+    }
+
+    private void CheckHealthPoints()
+    {
+        if(healthPoints <= 0)
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+        Destroy(this.gameObject);
     }
 }
