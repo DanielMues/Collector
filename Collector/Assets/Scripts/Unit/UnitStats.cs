@@ -18,9 +18,19 @@ public class UnitStats : MonoBehaviour
     [SerializeField]
     private string team;
 
-    public void Update()
+    Transform healthBar;
+    Transform bar;
+    private float maxHealthPoints;
+
+    private void Update()
     {
         CheckHealthPoints();
+    }
+
+    private void Start()
+    {
+        InitializeHealthBar();
+        maxHealthPoints = healthPoints;
     }
 
     public int GetHealthPoints()
@@ -56,6 +66,7 @@ public class UnitStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         healthPoints -= damage;
+        UpdateHealthBar();
     }
 
     private void CheckHealthPoints()
@@ -68,5 +79,31 @@ public class UnitStats : MonoBehaviour
     private void Die()
     {
         Destroy(this.gameObject);
+    }
+
+    private void UpdateHealthBar()
+    {
+        float scale = healthPoints / maxHealthPoints;
+        if(bar != null)
+        {
+            bar.localScale = new Vector3(scale, 1f);
+        }
+        else
+        {
+            Debug.Log("No Healthbar Found");
+        }
+    }
+
+    private void InitializeHealthBar()
+    {
+        healthBar = transform.Find("HealthBar");
+        if (healthBar != null)
+        {
+            bar = healthBar.Find("Bar");
+        }
+        else
+        {
+            Debug.Log("No 'HealthBar' transform was foung");
+        }
     }
 }
