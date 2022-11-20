@@ -40,7 +40,6 @@ public class UnitAction : MonoBehaviour
                 currentEnemy = FindClosestEnemy(this.transform.position, unitList);
                 if(currentEnemy != null)
                 {
-                    Debug.Log(currentEnemy.name);
                     MoveToEnemy(currentEnemy);
                     restTimeTillMove = timeBetweenMoving;
                     currentEnemy = null;
@@ -71,7 +70,7 @@ public class UnitAction : MonoBehaviour
         float shortestDistance = Range;
         foreach (GameObject unit in units)
         {
-            if(unit != null) // prevents to access a dead unit
+            if(unit != null && this.GetComponent<UnitStats>().GetTeam() != unit.GetComponent<UnitStats>().GetTeam()) // prevents to access a dead unit
             {
                 float distance = (position - unit.transform.position).magnitude;
                 if (distance <= Range && distance != 0 && distance <= shortestDistance)
@@ -90,7 +89,7 @@ public class UnitAction : MonoBehaviour
         float shortestDistance = 0;
         foreach (GameObject unit in units)
         {
-            if(unit != null) // prevents to access a dead unit
+            if(unit != null && this.GetComponent<UnitStats>().GetTeam() != unit.GetComponent<UnitStats>().GetTeam()) // prevents to access a dead unit
             {
                 float distance = (position - unit.transform.position).magnitude;
                 if (shortestDistance == 0 && distance != 0)
