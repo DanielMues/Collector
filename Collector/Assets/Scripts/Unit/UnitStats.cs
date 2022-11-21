@@ -4,23 +4,38 @@ using UnityEngine;
 
 public class UnitStats : MonoBehaviour
 {
-    [Header("Stats")]
+    // health
+    [Header("Health")]
     [SerializeField]
-    private int healthPoints;
-    [SerializeField]
-    private float attackSpeed;
-    [SerializeField]
-    private float moveSpeed;
-    [SerializeField]
-    private int attackDamage;
-    [SerializeField]
-    private int range;
-    [SerializeField]
-    private string team;
+    private int maxHealthPoints = 100;
+    private Transform healthBarHolder;
+    private Transform healthBar;
+    private int currentHealthPoints;
 
-    Transform healthBar;
-    Transform bar;
-    private float maxHealthPoints;
+    // stuff
+    [Header("Stuff")]
+    [SerializeField]
+    private float attackSpeed = 1f;
+    [SerializeField]
+    private float moveSpeed = 1f;
+    [SerializeField]
+    private int attackDamage = 1;
+    [SerializeField]
+    private int range = 1;
+    [SerializeField]
+    private string team = "A";
+
+    // mana
+    [Header("Mana")]
+    [SerializeField]
+    private int maxMana = 100;
+    [SerializeField]
+    private int manaProAttack = 10;
+    [SerializeField]
+    private int startMana = 0;
+    private int currentMana;
+    private Transform manaBarHolder;
+    private Transform manaBar;
 
     private void Update()
     {
@@ -29,13 +44,14 @@ public class UnitStats : MonoBehaviour
 
     private void Start()
     {
-        InitializeHealthBar();
-        maxHealthPoints = healthPoints;
+        InitializeBars();
+        currentHealthPoints = maxHealthPoints;
+        currentMana = startMana;
     }
 
-    public int GetHealthPoints()
+    public float GetHealthPoints()
     {
-        return healthPoints;
+        return currentHealthPoints;
     }
 
     public float GetAttackSpeed()
@@ -63,15 +79,42 @@ public class UnitStats : MonoBehaviour
         return team;
     }
 
+    public int GetMana()
+    {
+        return currentMana;
+    }
+
+    public int GetMaxMana()
+    {
+        return maxMana;
+    }
+
+    public int GetManaProAttack()
+    {
+        return manaProAttack;
+    }
+
     public void TakeDamage(int damage)
     {
-        healthPoints -= damage;
+        currentHealthPoints -= damage;
         UpdateHealthBar();
+    }
+
+    public void AddMana(int mana)
+    {
+        currentMana += mana;
+        UpdateManaBar();
+    }
+
+    public void ResetMana()
+    {
+        currentMana = 0;
+        UpdateManaBar();
     }
 
     private void CheckHealthPoints()
     {
-        if(healthPoints <= 0)
+        if(currentHealthPoints <= 0)
         {
             Die();
         }
@@ -83,10 +126,10 @@ public class UnitStats : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        float scale = healthPoints / maxHealthPoints;
-        if(bar != null)
+        if(healthBar != null)
         {
-            bar.localScale = new Vector3(scale, 1f);
+            float scale = (float)currentHealthPoints / maxHealthPoints;
+            healthBar.localScale = new Vector3(scale, 1f);
         }
         else
         {
@@ -94,16 +137,44 @@ public class UnitStats : MonoBehaviour
         }
     }
 
-    private void InitializeHealthBar()
+    private void UpdateManaBar()
     {
-        healthBar = transform.Find("HealthBar");
-        if (healthBar != null)
+        if(manaBar != null)
         {
-            bar = healthBar.Find("Bar");
+            float scale = (float)currentMana / maxMana;
+            manaBar.localScale = new Vector3(scale, 1f);
         }
         else
         {
-            Debug.Log("No 'HealthBar' transform was foung");
+            Debug.Log("No Healthbar Found");
+        }
+    }
+
+    private void InitializeBars()
+    {
+        healthBarHolder = transform.Find("HealthBar");
+        manaBarHolder = transform.Find("ManaBar");
+        if (healthBarHolder != null)
+        {
+            healthBar = healthBarHolder.Find("Bar");
+            healthBar.localScale = new Vector3(1f, 1f);
+        }
+        else
+        {
+            Debug.Log("No 'HealthBarHolder' transform was foung");
+        }
+        if(manaBarHolder != null)
+        {
+            manaBar = manaBarHolder.Find("Bar");
+            if(manaBar != null)
+            {
+                float scale = (float)startMana / maxMana ;
+                manaBar.localScale = new Vector3(scale, 1f);
+            }
+        }
+        else
+        {
+            Debug.Log("No 'ManaBarHolder' transform was foung");
         }
     }
 }

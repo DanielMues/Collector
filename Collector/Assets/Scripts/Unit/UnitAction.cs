@@ -14,6 +14,7 @@ public class UnitAction : MonoBehaviour
     private float timeBetweenMoving;
     private GameObject currentEnemy;
 
+    private UnitStats myUnitStats;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +24,9 @@ public class UnitAction : MonoBehaviour
         currentEnemy = null;
         unitList = null;
         startFight = false;
-        timeBetweenAttacks = this.GetComponent<UnitStats>().GetAttackSpeed();
-        timeBetweenMoving = this.GetComponent<UnitStats>().GetMoveSpeed();
+        myUnitStats = this.GetComponent<UnitStats>();
+        timeBetweenAttacks = myUnitStats.GetAttackSpeed();
+        timeBetweenMoving = myUnitStats.GetMoveSpeed();
         restTimeTillMove = timeBetweenAttacks;
     }
 
@@ -33,22 +35,29 @@ public class UnitAction : MonoBehaviour
     {
         if (startFight && unitList != null && restTimeTillMove <= 0)
         {
-            currentEnemy = FindEnemyInRange(this.GetComponent<UnitStats>().GetRange(), this.transform.position, unitList);
-            
-            if(currentEnemy == null)
+            currentEnemy = FindEnemyInRange(myUnitStats.GetRange(), this.transform.position, unitList);
+
+            if (currentEnemy == null)
             {
                 currentEnemy = FindClosestEnemy(this.transform.position, unitList);
-                if(currentEnemy != null)
+                if (currentEnemy != null)
                 {
                     MoveToEnemy(currentEnemy);
                     restTimeTillMove = timeBetweenMoving;
                     currentEnemy = null;
                 }
             }
+            else if (currentEnemy != null && myUnitStats.GetMana() >= myUnitStats.GetMaxMana())
+            {
+                // todo - actual special move
+                myUnitStats.ResetMana();
+                restTimeTillMove = timeBetweenAttacks;
+            }
             else if (currentEnemy != null)
             {
-                currentEnemy.GetComponent<UnitStats>().TakeDamage(this.GetComponent<UnitStats>().GetAttackDamage());
+                currentEnemy.GetComponent<UnitStats>().TakeDamage(myUnitStats.GetAttackDamage());
                 restTimeTillMove = timeBetweenAttacks;
+                myUnitStats.AddMana(myUnitStats.GetManaProAttack());
             }
         }
         restTimeTillMove -= Time.deltaTime;
@@ -70,7 +79,7 @@ public class UnitAction : MonoBehaviour
         float shortestDistance = Range;
         foreach (GameObject unit in units)
         {
-            if(unit != null && this.GetComponent<UnitStats>().GetTeam() != unit.GetComponent<UnitStats>().GetTeam()) // prevents to access a dead unit
+            if(unit != null && myUnitStats.GetTeam() != unit.GetComponent<UnitStats>().GetTeam()) // prevents to access a dead unit
             {
                 float distance = (position - unit.transform.position).magnitude;
                 if (distance <= Range && distance != 0 && distance <= shortestDistance)
@@ -89,7 +98,7 @@ public class UnitAction : MonoBehaviour
         float shortestDistance = 0;
         foreach (GameObject unit in units)
         {
-            if(unit != null && this.GetComponent<UnitStats>().GetTeam() != unit.GetComponent<UnitStats>().GetTeam()) // prevents to access a dead unit
+            if(unit != null && myUnitStats.GetTeam() != unit.GetComponent<UnitStats>().GetTeam()) // prevents to access a dead unit
             {
                 float distance = (position - unit.transform.position).magnitude;
                 if (shortestDistance == 0 && distance != 0)
