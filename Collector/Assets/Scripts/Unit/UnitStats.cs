@@ -37,6 +37,11 @@ public class UnitStats : MonoBehaviour
     private Transform manaBarHolder;
     private Transform manaBar;
 
+    // shield
+    private int currentShield;
+    private Transform shieldBarHolder;
+    private Transform shieldBar;
+
     private void Update()
     {
         CheckHealthPoints();
@@ -47,6 +52,7 @@ public class UnitStats : MonoBehaviour
         InitializeBars();
         currentHealthPoints = maxHealthPoints;
         currentMana = startMana;
+        currentShield = 0;
     }
 
     public float GetHealthPoints()
@@ -94,10 +100,30 @@ public class UnitStats : MonoBehaviour
         return manaProAttack;
     }
 
+    public void SetShield(int shieldAmount)
+    {
+        currentShield += shieldAmount;
+        UpdateShieldBar();
+    }
+
     public void TakeDamage(int damage)
     {
-        currentHealthPoints -= damage;
-        UpdateHealthBar();
+        if(currentShield == 0)
+        {
+            currentHealthPoints -= damage;
+            UpdateHealthBar();
+        }
+        else {
+            currentShield -= damage;
+            if(currentShield < 0)
+            {
+                currentHealthPoints += currentShield;
+                currentShield = 0;
+                UpdateHealthBar();
+            }
+            UpdateShieldBar();
+        }
+        
     }
 
     public void AddMana(int mana)
@@ -150,10 +176,28 @@ public class UnitStats : MonoBehaviour
         }
     }
 
+    private void UpdateShieldBar()
+    {
+        if (shieldBar != null)
+        {
+            float scale = (float)currentShield / maxHealthPoints;
+            if(scale > 1f)
+            {
+                scale = 1f;
+            }
+            shieldBar.localScale = new Vector3(scale, 1f);
+        }
+        else
+        {
+            Debug.Log("No Healthbar Found");
+        }
+    }
+
     private void InitializeBars()
     {
         healthBarHolder = transform.Find("HealthBar");
         manaBarHolder = transform.Find("ManaBar");
+        shieldBarHolder = transform.Find("ShieldBar");
         if (healthBarHolder != null)
         {
             healthBar = healthBarHolder.Find("Bar");
@@ -175,6 +219,18 @@ public class UnitStats : MonoBehaviour
         else
         {
             Debug.Log("No 'ManaBarHolder' transform was foung");
+        }
+        if (shieldBarHolder != null)
+        {
+            shieldBar = shieldBarHolder.Find("Bar");
+            if (shieldBar != null)
+            {
+                shieldBar.localScale = new Vector3(0f, 1f);
+            }
+        }
+        else
+        {
+            Debug.Log("No 'ShieldBarHolder' transform was foung");
         }
     }
 }

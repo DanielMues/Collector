@@ -50,6 +50,7 @@ public class UnitAction : MonoBehaviour
             else if (currentEnemy != null && myUnitStats.GetMana() >= myUnitStats.GetMaxMana())
             {
                 // todo - actual special move
+                myUnitStats.SetShield(30); // test shield
                 myUnitStats.ResetMana();
                 restTimeTillMove = timeBetweenAttacks;
             }
