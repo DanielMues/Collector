@@ -436,6 +436,7 @@ GameObject:
   - component: {fileID: 4954265867693495803}
   - component: {fileID: 4954265867693495800}
   - component: {fileID: 4954265867693495801}
+  - component: {fileID: 5400219831858482881}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -583,6 +584,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b2b458db5abf74ca3cc8a679b13fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5400219831858482881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4954265867693495799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096993c19a1947142a5f843ec12f85a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chooseAction: 0
+  shieldAmount: 10
+  stunAmount: 1
+  damageOverTime: 1
+  timeDamageOverTime: 3
+  timeDamageSteps: 0.5
+  lifeStealDamage: 15
+  lifeStealconversion: 0.5
 --- !u!1 &5066559343181961541
 GameObject:
   m_ObjectHideFlags: 0

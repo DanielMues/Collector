@@ -233,4 +233,10 @@ public class UnitStats : MonoBehaviour
             Debug.Log("No 'ShieldBarHolder' transform was foung");
         }
     }
+
+    public void addHealth(float amount)
+    {
+        currentHealthPoints += (int)amount;
+        UpdateHealthBar();
+    }
 }

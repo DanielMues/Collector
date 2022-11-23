@@ -49,8 +49,7 @@ public class UnitAction : MonoBehaviour
             }
             else if (currentEnemy != null && myUnitStats.GetMana() >= myUnitStats.GetMaxMana())
             {
-                // todo - actual special move
-                myUnitStats.SetShield(30); // test shield
+                this.GetComponent<TestSpecialMove>().doAction(currentEnemy);
                 myUnitStats.ResetMana();
                 restTimeTillMove = timeBetweenAttacks;
             }
@@ -140,6 +139,11 @@ public class UnitAction : MonoBehaviour
                 fightEventHandler.MoveTheUnit(false, true, this.gameObject);
             }
         }
+    }
+
+    public void addTimeTillNextMove(float time)
+    {
+        restTimeTillMove += time;
     }
 
 }
