@@ -239,4 +239,9 @@ public class UnitStats : MonoBehaviour
         currentHealthPoints += (int)amount;
         UpdateHealthBar();
     }
+
+    public void setDamage(int damage)
+    {
+        attackDamage = damage;
+    }
 }

@@ -11,7 +11,7 @@ public class FightEventHandler : MonoBehaviour
         instance = this;
     }
 
-    public class UnitList: EventArgs
+    public class UnitList : EventArgs
     {
         public List<GameObject> allUnits;
     }
