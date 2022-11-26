@@ -78,7 +78,7 @@ public class TestSpecialMove : MonoBehaviour
 
     private void StunEnemy(GameObject enemy)
     {
-        enemy.GetComponent<UnitAction>().addTimeTillNextMove(stunAmount);
+        enemy.GetComponent<UnitAction>().AddTimeTillNextMove(stunAmount);
     }
 
     private void StartDamageOverTime(GameObject enemy)

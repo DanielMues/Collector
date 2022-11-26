@@ -36,6 +36,7 @@ public class DragAndDropHandler : MonoBehaviour
         {
             selectedUnit = args.unit;
             mousePositionOffset = selectedUnit.transform.position - GetMouseWorldPosition();
+            customEventHandler.DeleteUnitOnField(args.unit, args.worldPosition);
         }
         else if (selectedUnit == args.unit)
         {

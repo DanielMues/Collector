@@ -32,14 +32,18 @@ public class FightEventHandler : MonoBehaviour
 
     public class UnitMovement : EventArgs
     {
-        private bool y_;
-        private bool up_;
-        private GameObject unit_;
-        public UnitMovement(bool y, bool up, GameObject unit)
+        private bool y_; // x or y direction
+        private bool up_; // + or - in the direction
+        private GameObject unit_; // unit to move
+        private int steps_; // amount of steps 
+        private bool specialMove_; // if called by a special move
+        public UnitMovement(bool y, bool up, GameObject unit, int steps, bool specialMove)
         {
             y_ = y;
             up_ = up;
             unit_ = unit;
+            steps_ = steps;
+            specialMove_ = specialMove;
         }
 
         public bool GetY()
@@ -56,12 +60,22 @@ public class FightEventHandler : MonoBehaviour
         {
             return unit_;
         }
+        
+        public int GetSteps()
+        {
+            return steps_;
+        }
+
+        public bool GetIfSpecialMove()
+        {
+            return specialMove_;
+        }
     }
 
     public event EventHandler<UnitMovement> MoveUnit;
 
-    public void MoveTheUnit(bool y, bool up, GameObject unit)
+    public void MoveTheUnit(bool y, bool up, GameObject unit, int steps, bool specialMove)
     {
-        MoveUnit?.Invoke(this, new UnitMovement(y, up, unit));
+        MoveUnit?.Invoke(this, new UnitMovement(y, up, unit, steps, specialMove));
     }
 }

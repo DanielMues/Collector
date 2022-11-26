@@ -13,6 +13,7 @@ public class UnitAction : MonoBehaviour
     private float restTimeTillMove;
     private float timeBetweenMoving;
     private GameObject currentEnemy;
+    private bool goToYFirst;
 
     private UnitStats myUnitStats;
     // Start is called before the first frame update
@@ -28,6 +29,7 @@ public class UnitAction : MonoBehaviour
         timeBetweenAttacks = myUnitStats.GetAttackSpeed();
         timeBetweenMoving = myUnitStats.GetMoveSpeed();
         restTimeTillMove = timeBetweenAttacks;
+        goToYFirst = true;
     }
 
     // Update is called once per frame
@@ -118,32 +120,173 @@ public class UnitAction : MonoBehaviour
 
     private void MoveToEnemy(GameObject enemy)
     {
-        float yDifference = this.transform.position.y - enemy.transform.position.y;
-        if (yDifference > 0)
+        if (goToYFirst)
         {
-            fightEventHandler.MoveTheUnit(true, false, this.gameObject);
+            float yDifference = this.transform.position.y - enemy.transform.position.y;
+            if (yDifference > 0)
+            {
+                if (!CheckIfTeamMateIsInYourWay(1))
+                {
+                    MoveUnitWrapperFunction(1);
+                }
+                else
+                {
+                    Debug.Log("teammate is in the way y1");
+                    MoveUnitWrapperFunction(3);
+                    goToYFirst = false;
+                }
+            }
+            else if (yDifference < 0)
+            {
+                if (!CheckIfTeamMateIsInYourWay(2))
+                {
+                    MoveUnitWrapperFunction(2);
+                }
+                else
+                {
+                    Debug.Log("teammate is in the way y2");
+                    MoveUnitWrapperFunction(4);
+                    goToYFirst = false;
+                }
+            }
+            else if (yDifference == 0)
+            {
+                float xDifference = this.transform.position.x - enemy.transform.position.x;
+                if (xDifference > 0)
+                {
+                    if (!CheckIfTeamMateIsInYourWay(3))
+                    {
+                        MoveUnitWrapperFunction(3);
+                    }
+                    else
+                    {
+                        Debug.Log("teammate is in the way y3");
+                        MoveUnitWrapperFunction(1);
+                        goToYFirst = false;
+                    }
+
+                }
+                else
+                {
+                    if (!CheckIfTeamMateIsInYourWay(4))
+                    {
+                        MoveUnitWrapperFunction(4);
+                    }
+                    else
+                    {
+                        Debug.Log("teammate is in the way y4");
+                        MoveUnitWrapperFunction(2);
+                        goToYFirst = false;
+                    }
+                }
+            }
         }
-        else if(yDifference < 0)
-        {
-            fightEventHandler.MoveTheUnit(true, true, this.gameObject);
-        }
-        else if(yDifference == 0)
+        else
         {
             float xDifference = this.transform.position.x - enemy.transform.position.x;
-            if(xDifference > 0)
+            if (xDifference > 0)
             {
-                fightEventHandler.MoveTheUnit(false, false, this.gameObject);
+                if (!CheckIfTeamMateIsInYourWay(3))
+                {
+                    MoveUnitWrapperFunction(3);
+                }
+                else
+                {
+                    Debug.Log("teammate is in the way x3");
+                    MoveUnitWrapperFunction(1);
+                    goToYFirst = true;
+                }
+                
             }
-            else
+            else if (xDifference < 0)
             {
-                fightEventHandler.MoveTheUnit(false, true, this.gameObject);
+                if (!CheckIfTeamMateIsInYourWay(4))
+                {
+                    MoveUnitWrapperFunction(4);
+                }
+                else
+                {
+                    Debug.Log("teammate is in the way x4");
+                    MoveUnitWrapperFunction(2);
+                    goToYFirst = true;
+                }
+            }
+            else if (xDifference == 0)
+            {
+                float yDifference = this.transform.position.y - enemy.transform.position.y;
+                if (yDifference > 0)
+                {
+                    if (!CheckIfTeamMateIsInYourWay(1))
+                    {
+                        MoveUnitWrapperFunction(1);
+                    }
+                    else
+                    {
+                        Debug.Log("teammate is in the way x1");
+                        MoveUnitWrapperFunction(3);
+                        goToYFirst = true;
+                    }
+                }
+                else
+                {
+                    if (!CheckIfTeamMateIsInYourWay(2))
+                    {
+                        MoveUnitWrapperFunction(2);
+                    }
+                    else
+                    {
+                        Debug.Log("teammate is in the way x2");
+                        MoveUnitWrapperFunction(4);
+                        goToYFirst = true;
+                    }
+                }
             }
         }
     }
 
-    public void addTimeTillNextMove(float time)
+    public void AddTimeTillNextMove(float time)
     {
         restTimeTillMove += time;
     }
 
+    public bool CheckIfTeamMateIsInYourWay(long direction)
+    {
+        foreach (GameObject unit in unitList)
+        {
+            if(unit.GetComponent<UnitStats>().GetTeam() == this.GetComponent<UnitStats>().GetTeam() && unit != this.gameObject)
+            {
+                switch (direction)
+                {
+                    case 1:
+                        return unit.transform.position == new Vector3(this.transform.position.x, this.transform.position.y - 2, this.transform.position.z);
+                    case 2:
+                        return unit.transform.position == new Vector3(this.transform.position.x, this.transform.position.y + 2, this.transform.position.z);
+                    case 3:
+                        return unit.transform.position == new Vector3(this.transform.position.x - 2, this.transform.position.y, this.transform.position.z);
+                    case 4:
+                        return unit.transform.position == new Vector3(this.transform.position.x + 2, this.transform.position.y, this.transform.position.z);
+                }
+            }
+        }
+        return false;
+    }
+
+    public void MoveUnitWrapperFunction(long direction)
+    {
+        switch (direction)
+        {
+            case 1:
+                fightEventHandler.MoveTheUnit(true, false, this.gameObject, 1, false);
+                break;
+            case 2:
+                fightEventHandler.MoveTheUnit(true, true, this.gameObject, 1, false);
+                break;
+            case 3:
+                fightEventHandler.MoveTheUnit(false, false, this.gameObject, 1, false);
+                break;
+            case 4:
+                fightEventHandler.MoveTheUnit(false, true, this.gameObject, 1, false);
+                break;
+        }
+    }
 }

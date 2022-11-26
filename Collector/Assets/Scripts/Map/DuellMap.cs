@@ -148,8 +148,9 @@ public class DuellMap : MonoBehaviour
         // EventHandler
         customEventHandler = CustomEventHandler.instance;
         customEventHandler.PlaceUnitOnField += PlaceUnit;
+        customEventHandler.DeleteUnitFromField += DeleteUnitOnField;
         fightEventHandler = FightEventHandler.instance;
-        fightEventHandler.MoveUnit += MoveUnit;
+        fightEventHandler.MoveUnit += MoveUnitX;
         // hoverTile
         hoverActivated = true;
         tile = GameObject.Instantiate(hoverTile);
@@ -193,7 +194,7 @@ public class DuellMap : MonoBehaviour
     private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
         GameObject currentUnit = map.GetUnit(args.worldPosition);
-        if (currentUnit == null)
+        if (currentUnit == null || currentUnit == args.unit)
         {
             map.SetUnit(args.unit, args.worldPosition);
             args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
@@ -212,7 +213,9 @@ public class DuellMap : MonoBehaviour
         if(args.unit == map.GetUnit(args.worldPosition))
         {
             map.DeleteUnit(args.worldPosition);
+            Debug.Log("deleted");
         }
+        Debug.Log(map.GetUnit(args.worldPosition));
     }
 
     public void SetUnitOnField(GameObject unit)
@@ -247,40 +250,62 @@ public class DuellMap : MonoBehaviour
         return unitsOnField;
     }
 
-    private void MoveUnit(object sender, FightEventHandler.UnitMovement args)
+    private void MoveUnitX(object sender, FightEventHandler.UnitMovement args)
     {
         int currentX = 0;
         int currentY = 0;
         GameObject currentUnit = args.GetUnit();
         map.GetXY(out currentX, out currentY, currentUnit.transform.position);
-
-        if (args.GetY())
+        GetNewXYPosition(args.GetY(), args.GetUp(), args.GetSteps(), ref currentX, ref currentY);
+        if (map.GetUnit(currentX, currentY) == null)
         {
-            if(args.GetUp())
+            setUnitAndFreeOldSpace(currentUnit, currentX, currentY);
+        }
+        else if (args.GetIfSpecialMove())
+        {
+            while(map.GetUnit(currentX, currentY) == null && (currentX != currentUnit.transform.position.x || currentY != currentUnit.transform.position.y) )
             {
-                currentY += 1;
+                GetNewXYPosition(args.GetY(), args.GetUp(), -1, ref currentX, ref currentY);
+            }
+            if(map.GetUnit(currentX, currentY) != null)
+            {
+                setUnitAndFreeOldSpace(currentUnit, currentX, currentY);
+            }
+        }
+    }
+
+    private void setUnitAndFreeOldSpace(GameObject currentUnit, int x, int y)
+    {
+        map.SetUnit(currentUnit, x, y);
+        map.DeleteUnit(currentUnit.transform.position);
+        currentUnit.transform.position = map.GetCenteredPosition(x, y);
+    }
+
+    private void GetNewXYPosition(bool isY, bool isPositive, int steps, ref int x, ref int y)
+    {
+        if (isY)
+        {
+            if (isPositive)
+            {
+                y += steps;
             }
             else
             {
-                currentY -= 1;
+                y -= steps;
             }
         }
         else
         {
-            if (args.GetUp())
+            if (isPositive)
             {
-                currentX += 1;
+                x += steps;
             }
             else
             {
-                currentX -= 1;
+                x -= steps;
             }
         }
-        if(map.GetUnit(currentX,currentY) == null)
-        {
-            map.SetUnit(currentUnit,currentX, currentY);
-            map.DeleteUnit(currentUnit.transform.position);
-            currentUnit.transform.position = map.GetCenteredPosition(currentX, currentY);
-        }
     }
+    
+
 }
