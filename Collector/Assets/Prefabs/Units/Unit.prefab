@@ -599,11 +599,13 @@ MonoBehaviour:
   chooseAction: 0
   shieldAmount: 10
   stunAmount: 1
+  lifeStealDamage: 15
+  lifeStealconversion: 0.5
   damageOverTime: 1
   timeDamageOverTime: 3
   timeDamageSteps: 0.5
-  lifeStealDamage: 15
-  lifeStealconversion: 0.5
+  debuffDamageDownScale: 0.2
+  debuffTime: 3
 --- !u!1 &5066559343181961541
 GameObject:
   m_ObjectHideFlags: 0

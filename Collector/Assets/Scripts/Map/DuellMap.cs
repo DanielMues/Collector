@@ -139,7 +139,7 @@ public class DuellMap : MonoBehaviour
     
     // fight
     private bool fightActivated;
-    public float timeBetweenListUpdates = 1f;
+    public float timeBetweenListUpdates = 0.05f;
     private float currentTimeBetweenUpdates;
 
     // Start is called before the first frame update
@@ -213,9 +213,7 @@ public class DuellMap : MonoBehaviour
         if(args.unit == map.GetUnit(args.worldPosition))
         {
             map.DeleteUnit(args.worldPosition);
-            Debug.Log("deleted");
         }
-        Debug.Log(map.GetUnit(args.worldPosition));
     }
 
     public void SetUnitOnField(GameObject unit)

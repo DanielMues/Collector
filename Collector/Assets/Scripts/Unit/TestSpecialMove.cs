@@ -28,7 +28,8 @@ public class TestSpecialMove : MonoBehaviour
     public float debuffTime = 3f;
     private bool startDebuffEnemy = false;
     private int oldDamage;
-    
+    // push unit 
+    private FightEventHandler fightEventHandler;
 
     public void doAction(GameObject enemy)
     {
@@ -49,6 +50,9 @@ public class TestSpecialMove : MonoBehaviour
             case 5:
                 StartDebuffDamage(enemy);
                 break;
+            case 6:
+                PushEnemyBack(enemy);
+                break;
         }
 
     }
@@ -56,6 +60,7 @@ public class TestSpecialMove : MonoBehaviour
     private void Start()
     {
         currentTime = Time.time;
+        fightEventHandler = FightEventHandler.instance;
     }
 
     private void Update()
@@ -117,7 +122,7 @@ public class TestSpecialMove : MonoBehaviour
 
     private void PushEnemyBack(GameObject enemy)
     {
-    
+
     }
 
     private void LifeSteal(GameObject enemy)

@@ -131,9 +131,7 @@ public class UnitAction : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("teammate is in the way y1");
                     MoveUnitWrapperFunction(3);
-                    goToYFirst = false;
                 }
             }
             else if (yDifference < 0)
@@ -144,9 +142,7 @@ public class UnitAction : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("teammate is in the way y2");
                     MoveUnitWrapperFunction(4);
-                    goToYFirst = false;
                 }
             }
             else if (yDifference == 0)
@@ -160,7 +156,6 @@ public class UnitAction : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("teammate is in the way y3");
                         MoveUnitWrapperFunction(1);
                         goToYFirst = false;
                     }
@@ -174,7 +169,6 @@ public class UnitAction : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("teammate is in the way y4");
                         MoveUnitWrapperFunction(2);
                         goToYFirst = false;
                     }
@@ -192,9 +186,7 @@ public class UnitAction : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("teammate is in the way x3");
                     MoveUnitWrapperFunction(1);
-                    goToYFirst = true;
                 }
                 
             }
@@ -206,9 +198,7 @@ public class UnitAction : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("teammate is in the way x4");
                     MoveUnitWrapperFunction(2);
-                    goToYFirst = true;
                 }
             }
             else if (xDifference == 0)
@@ -222,7 +212,6 @@ public class UnitAction : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("teammate is in the way x1");
                         MoveUnitWrapperFunction(3);
                         goToYFirst = true;
                     }
@@ -235,7 +224,6 @@ public class UnitAction : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("teammate is in the way x2");
                         MoveUnitWrapperFunction(4);
                         goToYFirst = true;
                     }
