@@ -122,7 +122,28 @@ public class TestSpecialMove : MonoBehaviour
 
     private void PushEnemyBack(GameObject enemy)
     {
+        float yDifference = this.transform.position.y - enemy.transform.position.y;
+        if (yDifference > 0)
+        {
+            fightEventHandler.MoveTheUnit(true, false, enemy, 2, true);
+        }
+        else if (yDifference < 0)
+        {
+            fightEventHandler.MoveTheUnit(true, true, enemy, 2, true);
+        }
+        else if (yDifference == 0)
+        {
+            float xDifference = this.transform.position.x - enemy.transform.position.x;
+            if (xDifference > 0)
+            {
 
+                fightEventHandler.MoveTheUnit(false, false, enemy, 2, true);
+            }
+            else
+            {
+                fightEventHandler.MoveTheUnit(false, true, enemy, 2, true);
+            }
+        }
     }
 
     private void LifeSteal(GameObject enemy)

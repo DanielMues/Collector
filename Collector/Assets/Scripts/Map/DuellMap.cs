@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MapInformation
 {
@@ -57,28 +58,35 @@ public class Map
         y = Mathf.FloorToInt((position - worldPosition).y / cellSizeY);
         if (x < 0)
         {
-            x = 0;
+            throw new IndexOutOfRangeException();
         }
         else if (x > mapSizeX - 1)
         {
-            x = mapSizeX - 1;
+            throw new IndexOutOfRangeException();
         }
 
         if (y < 0)
         {
-            y = 0;
+            throw new IndexOutOfRangeException();
         }
         else if (y > mapSizeY - 1)
         {
-            y = mapSizeY - 1;
+            throw new IndexOutOfRangeException();
         }
     }
 
     public Vector3 GetCenteredPosition(Vector3 position)
     {
         int x, y;
-        GetXY(out x, out y, position);
-        return mapGrid[x, y].centerPosition + new Vector3(0, 0, -1);
+        try
+        {
+            GetXY(out x, out y, position);
+            return mapGrid[x, y].centerPosition + new Vector3(0, 0, -1);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new IndexOutOfRangeException();
+        }
     }
 
     public Vector3 GetCenteredPosition(int x, int y)
@@ -89,8 +97,15 @@ public class Map
     public void SetUnit(GameObject unit, Vector3 position)
     {
         int x, y;
-        GetXY(out x, out y, position);
-        mapGrid[x, y].unit = unit;
+        try
+        {
+            GetXY(out x, out y, position);
+            mapGrid[x, y].unit = unit;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.LogWarning("cant set units out of bounds");
+        }
     }
 
     public void SetUnit(GameObject unit, int x, int y)
@@ -101,15 +116,30 @@ public class Map
     public void DeleteUnit (Vector3 position)
     {
         int x, y;
-        GetXY(out x, out y, position);
-        mapGrid[x, y].unit = null;
+        try
+        {
+            GetXY(out x, out y, position);
+            mapGrid[x, y].unit = null;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.LogWarning("can´t delete unit out of bounds");
+        }
     }
 
     public GameObject GetUnit(Vector3 position)
     {
         int x, y;
-        GetXY(out x, out y, position);
-        return mapGrid[x, y].unit;
+        try
+        {
+            GetXY(out x, out y, position);
+            return mapGrid[x, y].unit;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new IndexOutOfRangeException();
+        }
+
     }
 
     public GameObject GetUnit(int x, int y)
@@ -188,32 +218,55 @@ public class DuellMap : MonoBehaviour
     private void hoverTheTile()
     {
         Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        tile.transform.position = map.GetCenteredPosition(currentMousePosition);
+        try
+        {
+            tile.transform.position = map.GetCenteredPosition(currentMousePosition);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            // make the hovertile invisible
+        }
+        
     }
 
     private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
-        GameObject currentUnit = map.GetUnit(args.worldPosition);
-        if (currentUnit == null || currentUnit == args.unit)
+        try
         {
-            map.SetUnit(args.unit, args.worldPosition);
-            args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+            GameObject currentUnit = map.GetUnit(args.worldPosition);
+            if (currentUnit == null || currentUnit == args.unit)
+            {
+                map.SetUnit(args.unit, args.worldPosition);
+                args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+            }
+            else
+            {
+                map.SetUnit(args.unit, args.worldPosition);
+                Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
+                args.unit.transform.position = currentMapPosition;
+                customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
+            }
         }
-        else
+        catch (IndexOutOfRangeException)
         {
-            map.SetUnit(args.unit, args.worldPosition);
-            Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
-            args.unit.transform.position = currentMapPosition;
-            customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
+            Debug.LogWarning("Cant place Unit out of Range");
         }
     }
 
     private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
     {
-        if(args.unit == map.GetUnit(args.worldPosition))
+        try
         {
-            map.DeleteUnit(args.worldPosition);
+            if (args.unit == map.GetUnit(args.worldPosition))
+            {
+                map.DeleteUnit(args.worldPosition);
+            }
         }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.LogWarning("position out of bounds");
+        }
+        
     }
 
     public void SetUnitOnField(GameObject unit)
@@ -238,10 +291,17 @@ public class DuellMap : MonoBehaviour
         {
             for (int y = 0; y < ySize; y++)
             {
-                GameObject currentUnit = map.GetUnit(x, y);
-                if(currentUnit != null)
+                try
                 {
-                    unitsOnField.Add(currentUnit);
+                    GameObject currentUnit = map.GetUnit(x, y);
+                    if (currentUnit != null)
+                    {
+                        unitsOnField.Add(currentUnit);
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Debug.LogWarning("mapposition not on field");
                 }
             }
         }
@@ -252,23 +312,30 @@ public class DuellMap : MonoBehaviour
     {
         int currentX = 0;
         int currentY = 0;
-        GameObject currentUnit = args.GetUnit();
-        map.GetXY(out currentX, out currentY, currentUnit.transform.position);
-        GetNewXYPosition(args.GetY(), args.GetUp(), args.GetSteps(), ref currentX, ref currentY);
-        if (map.GetUnit(currentX, currentY) == null)
+        try
         {
-            setUnitAndFreeOldSpace(currentUnit, currentX, currentY);
-        }
-        else if (args.GetIfSpecialMove())
-        {
-            while(map.GetUnit(currentX, currentY) == null && (currentX != currentUnit.transform.position.x || currentY != currentUnit.transform.position.y) )
-            {
-                GetNewXYPosition(args.GetY(), args.GetUp(), -1, ref currentX, ref currentY);
-            }
-            if(map.GetUnit(currentX, currentY) != null)
+            GameObject currentUnit = args.GetUnit();
+            map.GetXY(out currentX, out currentY, currentUnit.transform.position);
+            GetNewXYPosition(args.GetY(), args.GetUp(), args.GetSteps(), ref currentX, ref currentY);
+            if (map.GetUnit(currentX, currentY) == null)
             {
                 setUnitAndFreeOldSpace(currentUnit, currentX, currentY);
             }
+            else if (args.GetIfSpecialMove())
+            {
+                while (map.GetUnit(currentX, currentY) == null && (currentX != currentUnit.transform.position.x || currentY != currentUnit.transform.position.y))
+                {
+                    GetNewXYPosition(args.GetY(), args.GetUp(), -1, ref currentX, ref currentY);
+                }
+                if (map.GetUnit(currentX, currentY) != null)
+                {
+                    setUnitAndFreeOldSpace(currentUnit, currentX, currentY);
+                }
+            }
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.LogWarning("index out of range");
         }
     }
 
@@ -276,7 +343,14 @@ public class DuellMap : MonoBehaviour
     {
         map.SetUnit(currentUnit, x, y);
         map.DeleteUnit(currentUnit.transform.position);
-        currentUnit.transform.position = map.GetCenteredPosition(x, y);
+        try
+        {
+            currentUnit.transform.position = map.GetCenteredPosition(x, y);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.LogWarning("positon of unit is out of bounds");
+        }
     }
 
     private void GetNewXYPosition(bool isY, bool isPositive, int steps, ref int x, ref int y)
