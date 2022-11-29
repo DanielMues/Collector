@@ -19,10 +19,10 @@ public class MapInformation
 
 public class Map
 {
-    private int mapSizeX;
-    private int mapSizeY;
-    private long cellSizeX;
-    private long cellSizeY;
+    private int mapSizeX;  // amount of cells in x direction
+    private int mapSizeY; // amount of cells in y direction
+    private long cellSizeX; // size of cell in x direction
+    private long cellSizeY; // size of cell in y direction 
     private Vector3 worldPosition;
     public MapInformation[,] mapGrid;
 
@@ -154,10 +154,10 @@ public class DuellMap : MonoBehaviour
     private CustomEventHandler customEventHandler;
     private FightEventHandler fightEventHandler;
     // map
-    public long sizeX = 2;
-    public long sizeY = 2;
-    private int xSize = 8;
-    private int ySize = 8;
+    public long sizeX = 2; // size of cell in x direction
+    public long sizeY = 2; // size of cell in y direction
+    private int xSize = 8; // amount of cells in x direction
+    private int ySize = 8; // amount of cells in y direction
     public GameObject backgroundTilePrefab;
     public Vector3 worldPosition = new Vector3(0, 0, 0);
     private Map map;
