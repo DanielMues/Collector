@@ -221,10 +221,17 @@ public class DuellMap : MonoBehaviour
         try
         {
             tile.transform.position = map.GetCenteredPosition(currentMousePosition);
+            if (!tile.activeSelf)
+            {
+                tile.SetActive(true);
+            }
         }
         catch (IndexOutOfRangeException)
         {
-            // make the hovertile invisible
+            if (tile.activeSelf)
+            {
+                tile.SetActive(false);
+            }
         }
         
     }
