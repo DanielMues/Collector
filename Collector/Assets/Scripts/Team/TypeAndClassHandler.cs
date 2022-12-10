@@ -31,6 +31,8 @@ public class TypeAndClassHandler : MonoBehaviour
     {
         typeAndClassEventHandler = TypeAndClassEventHandler.instance;
         typeAndClassEventHandler.createTeam += CreateTeamComb;
+        typeAndClassEventHandler.SetTypeAndClass += AddTypeAndClass;
+        typeAndClassEventHandler.RemoveTypeAndClass += RemoveTypeAndClass;
         teamClasses = new List<unitClass>();
         teamTypes = new List<unitTyp>();
         ResetAllCounter();
@@ -77,9 +79,9 @@ public class TypeAndClassHandler : MonoBehaviour
         }
     }
 
-    private void CountTeams()
+    private void CountTypes()
     {
-        foreach (unitTyp type in teamClasses)
+        foreach (unitTyp type in teamTypes)
         {
             switch (type)
             {
@@ -99,7 +101,7 @@ public class TypeAndClassHandler : MonoBehaviour
     public void CreateTeamComb(object sender, EventArgs args)
     {
         CountClasses();
-        CountTeams();
+        CountTypes();
         // class
         if(counterBird > 0)
         {
@@ -122,7 +124,7 @@ public class TypeAndClassHandler : MonoBehaviour
             int amount = 0;
             foreach (int threshhold in threshHoldTurtle)
             {
-                if (counterBird >= threshhold)
+                if (counterTurtle >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -139,7 +141,7 @@ public class TypeAndClassHandler : MonoBehaviour
             int amount = 0;
             foreach (int threshhold in threshHoldMasked)
             {
-                if (counterBird >= threshhold)
+                if (counterMasked >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -155,7 +157,7 @@ public class TypeAndClassHandler : MonoBehaviour
             int amount = 0;
             foreach (int threshhold in threshHoldSpicked)
             {
-                if (counterBird >= threshhold)
+                if (counterSpicked >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -171,7 +173,7 @@ public class TypeAndClassHandler : MonoBehaviour
             int amount = 0;
             foreach (int threshhold in threshHoldHardened)
             {
-                if (counterBird >= threshhold)
+                if (counterHardened >= threshhold)
                 {
                     amount = threshhold;
                 }

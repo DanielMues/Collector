@@ -323,6 +323,8 @@ public class UnitStats : MonoBehaviour
         {
             maxHealthPoints += 100 * args.GetAmount();
             currentHealthPoints = maxHealthPoints;
+            UpdateHealthBar();
+            UpdateShieldBar();
         }
     }
 
