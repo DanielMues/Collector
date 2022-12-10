@@ -7,7 +7,8 @@ public class UnitStats : MonoBehaviour
     // health
     [Header("Health")]
     [SerializeField]
-    private int maxHealthPoints = 100;
+    private int baseHealthPoints = 100;
+    private int maxHealthPoints;
     private Transform healthBarHolder;
     private Transform healthBar;
     private int currentHealthPoints;
@@ -15,13 +16,17 @@ public class UnitStats : MonoBehaviour
     // stuff
     [Header("Stuff")]
     [SerializeField]
-    private float attackSpeed = 1f;
+    private float baseAttackSpeed = 1f;
+    private float attackSpeed;
     [SerializeField]
-    private float moveSpeed = 1f;
+    private float baseMoveSpeed = 1f;
+    private float moveSpeed;
     [SerializeField]
-    private int attackDamage = 1;
+    private int baseAttackDamage = 1;
+    private int attackDamage;
     [SerializeField]
-    private int range = 1;
+    private int baseRange = 1;
+    private int range;
     [SerializeField]
     private string team = "A";
 
@@ -42,6 +47,13 @@ public class UnitStats : MonoBehaviour
     private Transform shieldBarHolder;
     private Transform shieldBar;
 
+    //types and classes
+    [SerializeField]
+    TypeAndClassHandler.unitTyp myTyp;
+    [SerializeField]
+    TypeAndClassHandler.unitClass myClass;
+
+    TypeAndClassEventHandler typeAndClassEventHandler;
     private void Update()
     {
         CheckHealthPoints();
@@ -50,11 +62,28 @@ public class UnitStats : MonoBehaviour
     private void Start()
     {
         InitializeBars();
+        SetBaseValues();
         currentHealthPoints = maxHealthPoints;
         currentMana = startMana;
         currentShield = 0;
+        typeAndClassEventHandler = TypeAndClassEventHandler.instance;
+        typeAndClassEventHandler.birdBuff += setBirdBuff;
+        typeAndClassEventHandler.turtleBuff += setTurtleBuff;
+        typeAndClassEventHandler.spickedBuff += setSpickedBuff;
+        typeAndClassEventHandler.maskedBuff += setMaskedBuff;
+        typeAndClassEventHandler.hardenedBuff += setHardenedBuff;
     }
 
+    private void SetBaseValues()
+    {
+        attackSpeed = baseAttackSpeed;
+        attackDamage = baseAttackDamage;
+        moveSpeed = baseMoveSpeed;
+        range = baseRange;
+        maxHealthPoints = baseHealthPoints;
+    }
+
+    // get functions
     public float GetHealthPoints()
     {
         return currentHealthPoints;
@@ -77,7 +106,7 @@ public class UnitStats : MonoBehaviour
 
     public int GetRange()
     {
-        return range*2;
+        return range * 2;
     }
 
     public string GetTeam()
@@ -100,6 +129,18 @@ public class UnitStats : MonoBehaviour
         return manaProAttack;
     }
 
+    public TypeAndClassHandler.unitTyp GetUnitTyp()
+    {
+        return myTyp;
+    }
+
+    public TypeAndClassHandler.unitClass GetUnitClass()
+    {
+        return myClass;
+    }
+
+    // set functions
+
     public void SetShield(int shieldAmount)
     {
         currentShield += shieldAmount;
@@ -108,14 +149,15 @@ public class UnitStats : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if(currentShield == 0)
+        if (currentShield == 0)
         {
             currentHealthPoints -= damage;
             UpdateHealthBar();
         }
-        else {
+        else
+        {
             currentShield -= damage;
-            if(currentShield < 0)
+            if (currentShield < 0)
             {
                 currentHealthPoints += currentShield;
                 currentShield = 0;
@@ -123,7 +165,7 @@ public class UnitStats : MonoBehaviour
             }
             UpdateShieldBar();
         }
-        
+
     }
 
     public void AddMana(int mana)
@@ -138,21 +180,22 @@ public class UnitStats : MonoBehaviour
         UpdateManaBar();
     }
 
-    private void CheckHealthPoints()
+    public void addHealth(float amount)
     {
-        if(currentHealthPoints <= 0)
-        {
-            Die();
-        }
-    }
-    private void Die()
-    {
-        Destroy(this.gameObject);
+        currentHealthPoints += (int)amount;
+        UpdateHealthBar();
     }
 
+    public void setDamage(int damage)
+    {
+        attackDamage = damage;
+    }
+
+
+    // health-, shield-, manabar functions 
     private void UpdateHealthBar()
     {
-        if(healthBar != null)
+        if (healthBar != null)
         {
             float scale = (float)currentHealthPoints / maxHealthPoints;
             healthBar.localScale = new Vector3(scale, 1f);
@@ -165,7 +208,7 @@ public class UnitStats : MonoBehaviour
 
     private void UpdateManaBar()
     {
-        if(manaBar != null)
+        if (manaBar != null)
         {
             float scale = (float)currentMana / maxMana;
             manaBar.localScale = new Vector3(scale, 1f);
@@ -181,7 +224,7 @@ public class UnitStats : MonoBehaviour
         if (shieldBar != null)
         {
             float scale = (float)currentShield / maxHealthPoints;
-            if(scale > 1f)
+            if (scale > 1f)
             {
                 scale = 1f;
             }
@@ -207,12 +250,12 @@ public class UnitStats : MonoBehaviour
         {
             Debug.Log("No 'HealthBarHolder' transform was foung");
         }
-        if(manaBarHolder != null)
+        if (manaBarHolder != null)
         {
             manaBar = manaBarHolder.Find("Bar");
-            if(manaBar != null)
+            if (manaBar != null)
             {
-                float scale = (float)startMana / maxMana ;
+                float scale = (float)startMana / maxMana;
                 manaBar.localScale = new Vector3(scale, 1f);
             }
         }
@@ -234,14 +277,60 @@ public class UnitStats : MonoBehaviour
         }
     }
 
-    public void addHealth(float amount)
+    // check unit functions
+    private void CheckHealthPoints()
     {
-        currentHealthPoints += (int)amount;
-        UpdateHealthBar();
+        if (currentHealthPoints <= 0)
+        {
+            Die();
+        }
     }
 
-    public void setDamage(int damage)
+    private void Die()
     {
-        attackDamage = damage;
+        Destroy(this.gameObject);
+    }
+
+    // buffs
+    public void setBirdBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
+    {
+        if(myClass == TypeAndClassHandler.unitClass.bird)
+        {
+            attackSpeed -= 0.1f * args.GetAmount();
+        }
+    }
+
+    public void setTurtleBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
+    {
+        if(myClass == TypeAndClassHandler.unitClass.turtle)
+        {
+            moveSpeed += 0.2f;
+            SetShield(100 * args.GetAmount());
+        }
+    }
+
+    public void setMaskedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
+    {
+        if (myTyp == TypeAndClassHandler.unitTyp.masked)
+        {
+            range += 1 * args.GetAmount();
+        }
+    }
+
+    public void setHardenedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
+    {
+        if (myTyp == TypeAndClassHandler.unitTyp.hardened)
+        {
+            maxHealthPoints += 100 * args.GetAmount();
+            currentHealthPoints = maxHealthPoints;
+        }
+    }
+
+    public void setSpickedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
+    {
+        if (myTyp == TypeAndClassHandler.unitTyp.spicked)
+        {
+            attackDamage += 10 * args.GetAmount();
+        }
     }
 }

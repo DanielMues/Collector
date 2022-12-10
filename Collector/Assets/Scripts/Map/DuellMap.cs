@@ -153,6 +153,7 @@ public class DuellMap : MonoBehaviour
     // Eventhandlers
     private CustomEventHandler customEventHandler;
     private FightEventHandler fightEventHandler;
+    private TypeAndClassEventHandler typeAndClassEventHandler;
     // map
     public long sizeX = 2; // size of cell in x direction
     public long sizeY = 2; // size of cell in y direction
@@ -181,6 +182,7 @@ public class DuellMap : MonoBehaviour
         customEventHandler.DeleteUnitFromField += DeleteUnitOnField;
         fightEventHandler = FightEventHandler.instance;
         fightEventHandler.MoveUnit += MoveUnitX;
+        typeAndClassEventHandler = TypeAndClassEventHandler.instance;
         // hoverTile
         hoverActivated = true;
         tile = GameObject.Instantiate(hoverTile);

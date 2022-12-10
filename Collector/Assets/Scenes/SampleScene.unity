@@ -599,12 +599,24 @@ PrefabInstance:
       value: Square2
       objectReference: {fileID: 0}
     - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
+      propertyPath: team
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
+      propertyPath: myTyp
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
       propertyPath: range
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
       propertyPath: maxMana
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
+      propertyPath: myClass
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
       propertyPath: startMana
@@ -709,6 +721,7 @@ GameObject:
   - component: {fileID: 1100747227}
   - component: {fileID: 1100747226}
   - component: {fileID: 1100747228}
+  - component: {fileID: 1100747229}
   m_Layer: 0
   m_Name: EventHandler
   m_TagString: Untagged
@@ -752,6 +765,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87bdfe250ad8b274784e9403e0d1d62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1100747229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100747225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8949f602c7f80ff40990011c2a2c9799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1132598711
@@ -833,6 +858,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132598711}
   m_CullTransparentMesh: 1
+--- !u!1 &1432145905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1432145907}
+  - component: {fileID: 1432145906}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1432145906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432145905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417e441ffe3e87c4686373cc3b2a5bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1432145907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432145905}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -89.00604, y: 43.526424, z: -336.95532}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1534499869
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,11 +1007,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
       propertyPath: team
-      value: B
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
+      propertyPath: myTyp
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
       propertyPath: maxMana
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
+      propertyPath: myClass
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4954265867693495800, guid: 9a01593a0d112e9468c09f6af449dea5, type: 3}
       propertyPath: moveSpeed

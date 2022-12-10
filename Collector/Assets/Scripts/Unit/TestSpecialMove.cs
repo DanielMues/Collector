@@ -6,10 +6,12 @@ public class TestSpecialMove : MonoBehaviour
 {
     [Header("Settings")]
     //general
-    public int chooseAction;
     private float currentTime;
     private float currentCounter;
     private GameObject damageEnemy;
+    [SerializeField]
+    SpecialMove specialMove;
+    enum SpecialMove { shield, stun, damageOverTime, lifeSteal, debuffDamage, pushBack }
     //shield
     public int shieldAmount = 10;
     //stun
@@ -33,28 +35,27 @@ public class TestSpecialMove : MonoBehaviour
 
     public void doAction(GameObject enemy)
     {
-        switch (chooseAction)
+        switch (specialMove)
         {
-            case 1:
+            case SpecialMove.shield:
                 AddShield();
                 break;
-            case 2:
+            case SpecialMove.stun:
                 StunEnemy(enemy);
                 break;
-            case 3:
+            case SpecialMove.damageOverTime:
                 StartDamageOverTime(enemy);
                 break;
-            case 4:
+            case SpecialMove.lifeSteal:
                 LifeSteal(enemy);
                 break;
-            case 5:
+            case SpecialMove.debuffDamage:
                 StartDebuffDamage(enemy);
                 break;
-            case 6:
+            case SpecialMove.pushBack:
                 PushEnemyBack(enemy);
                 break;
         }
-
     }
 
     private void Start()
