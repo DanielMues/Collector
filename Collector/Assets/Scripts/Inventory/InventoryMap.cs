@@ -11,6 +11,9 @@ public class InventoryMap: MonoBehaviour
     public Vector3 worldPosition;
     public GameObject backgroundTilePrefab;
     private Map map;
+
+    // init map
+    public List<Mutant> playerMutants;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,11 +27,30 @@ public class InventoryMap: MonoBehaviour
                 Tile.transform.position = position;
             }
         }
+        InitInventory();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitInventory()
     {
-        
+        int currentX = 0;
+        int currentY = 0;
+        foreach (Mutant mutant in playerMutants)
+        {
+            if (mutant != null && mutant.mutantPrefab != null)
+            {
+                GameObject newUnit = Instantiate(mutant.mutantPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                map.SetUnit(newUnit, currentX, currentY);
+                newUnit.transform.position = map.GetCenteredPosition(currentX, currentY);
+                if (currentX < cellAmountX && currentY != cellAmountY)
+                {
+                    currentX = 0;
+                    currentY += 1;
+                }
+                else if (currentX != cellAmountX)
+                {
+                    currentX += 1;
+                }
+            }
+        }
     }
 }
