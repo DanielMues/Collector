@@ -146,6 +146,31 @@ public class Map
     {
         return mapGrid[x, y].unit;
     }
+
+    public bool IsPositionOnMap(Vector3 position)
+    {
+        int x = Mathf.FloorToInt((position - worldPosition).x / cellSizeX);
+        int y = Mathf.FloorToInt((position - worldPosition).y / cellSizeY);
+        if (x < 0)
+        {
+            return false;
+        }
+        else if (x > mapSizeX - 1)
+        {
+            return false;
+        }
+
+        if (y < 0)
+        {
+            return false;
+        }
+        else if (y > mapSizeY - 1)
+        {
+            return false;
+        }
+
+        return true;
+    }
 }
 
 public class DuellMap : MonoBehaviour
@@ -240,47 +265,52 @@ public class DuellMap : MonoBehaviour
 
     private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
-        try
+        if (map.IsPositionOnMap(args.worldPosition))
         {
-            GameObject currentUnit = map.GetUnit(args.worldPosition);
-            if (currentUnit == null || currentUnit == args.unit)
+            try
             {
-                map.SetUnit(args.unit, args.worldPosition);
-                typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetUnitClass(), args.unit.GetComponent<UnitStats>().GetUnitTyp(), args.unit.GetComponent<UnitStats>().GetTeam());
-                args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+                GameObject currentUnit = map.GetUnit(args.worldPosition);
+                if (currentUnit == null || currentUnit == args.unit)
+                {
+                    map.SetUnit(args.unit, args.worldPosition);
+                    typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetUnitClass(), args.unit.GetComponent<UnitStats>().GetUnitTyp(), args.unit.GetComponent<UnitStats>().GetTeam());
+                    args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+                }
+                else
+                {
+                    map.SetUnit(args.unit, args.worldPosition);
+                    typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetUnitClass(), args.unit.GetComponent<UnitStats>().GetUnitTyp(), args.unit.GetComponent<UnitStats>().GetTeam());
+                    Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
+                    args.unit.transform.position = currentMapPosition;
+                    customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
+                    typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetUnitClass(), currentUnit.GetComponent<UnitStats>().GetUnitTyp(), currentUnit.GetComponent<UnitStats>().GetTeam());
+                }
             }
-            else
+            catch (IndexOutOfRangeException)
             {
-                map.SetUnit(args.unit, args.worldPosition);
-                typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetUnitClass(), args.unit.GetComponent<UnitStats>().GetUnitTyp(), args.unit.GetComponent<UnitStats>().GetTeam());
-                Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
-                args.unit.transform.position = currentMapPosition;
-                customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
-                typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetUnitClass(), currentUnit.GetComponent<UnitStats>().GetUnitTyp(), currentUnit.GetComponent<UnitStats>().GetTeam());
+                Debug.LogWarning("Cant place Unit out of Range");
             }
-        }
-        catch (IndexOutOfRangeException)
-        {
-            Debug.LogWarning("Cant place Unit out of Range");
         }
     }
 
     private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
     {
-        try
+        if (map.IsPositionOnMap(args.worldPosition))
         {
-            GameObject currentUnit = map.GetUnit(args.worldPosition);
-            if (args.unit == currentUnit)
+            try
             {
-                map.DeleteUnit(args.worldPosition);
-                typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetUnitClass(), currentUnit.GetComponent<UnitStats>().GetUnitTyp(), currentUnit.GetComponent<UnitStats>().GetTeam());
+                GameObject currentUnit = map.GetUnit(args.worldPosition);
+                if (args.unit == currentUnit)
+                {
+                    map.DeleteUnit(args.worldPosition);
+                    typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetUnitClass(), currentUnit.GetComponent<UnitStats>().GetUnitTyp(), currentUnit.GetComponent<UnitStats>().GetTeam());
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.LogWarning("position out of bounds");
             }
         }
-        catch (IndexOutOfRangeException)
-        {
-            Debug.LogWarning("position out of bounds");
-        }
-        
     }
 
     public void SetUnitOnField(GameObject unit)

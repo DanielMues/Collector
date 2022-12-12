@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class InventoryMap: MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class InventoryMap: MonoBehaviour
     public Vector3 worldPosition;
     public GameObject backgroundTilePrefab;
     private Map map;
+    private CustomEventHandler customEventHandler;
 
     // init map
     public List<Mutant> playerMutants;
     // Start is called before the first frame update
     void Start()
     {
+        customEventHandler = CustomEventHandler.instance;
+        customEventHandler.PlaceUnitOnField += PlaceUnit;
+        customEventHandler.DeleteUnitFromField += DeleteUnitOnField;
         map = new Map(worldPosition, cellAmountX, cellAmountY, cellSizeX, cellSizeY);
         for (int x = 0; x < cellAmountX; x++)
         {
@@ -50,6 +55,45 @@ public class InventoryMap: MonoBehaviour
                 {
                     currentX += 1;
                 }
+            }
+        }
+    }
+
+    private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
+    {
+        if (map.IsPositionOnMap(args.worldPosition))
+        {
+            try
+            {
+                GameObject currentUnit = map.GetUnit(args.worldPosition);
+                if (currentUnit == null || currentUnit == args.unit)
+                {
+                    map.SetUnit(args.unit, args.worldPosition);
+                    args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.LogWarning("Cant place Unit out of Range");
+            }
+        }
+    }
+
+    private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
+    {
+        if (map.IsPositionOnMap(args.worldPosition))
+        {
+            try
+            {
+                GameObject currentUnit = map.GetUnit(args.worldPosition);
+                if (args.unit == currentUnit)
+                {
+                    map.DeleteUnit(args.worldPosition);
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.LogWarning("position out of bounds");
             }
         }
     }
