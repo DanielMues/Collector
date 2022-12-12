@@ -62,8 +62,7 @@ public class UnitStats : MonoBehaviour
     private void Start()
     {
         InitializeBars();
-        SetBaseValues();
-        currentHealthPoints = maxHealthPoints;
+        SetFightValues();
         currentMana = startMana;
         currentShield = 0;
         typeAndClassEventHandler = TypeAndClassEventHandler.instance;
@@ -74,13 +73,26 @@ public class UnitStats : MonoBehaviour
         typeAndClassEventHandler.hardenedBuff += setHardenedBuff;
     }
 
-    private void SetBaseValues()
+    private void SetFightValues()
     {
         attackSpeed = baseAttackSpeed;
         attackDamage = baseAttackDamage;
         moveSpeed = baseMoveSpeed;
         range = baseRange;
         maxHealthPoints = baseHealthPoints;
+        currentHealthPoints = maxHealthPoints;
+    }
+
+    public void SetBaseValues(float attackSpeed, int attackDamage, float moveSpeed, int range, int healthpoints, string teamName)
+    {
+        baseAttackSpeed = attackSpeed;
+        baseAttackDamage = attackDamage;
+        baseMoveSpeed = moveSpeed;
+        baseRange = range;
+        baseHealthPoints = healthpoints;
+        team = teamName;
+        SetFightValues();
+        UpdateHealthBar();
     }
 
     // get functions

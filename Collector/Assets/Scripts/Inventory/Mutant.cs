@@ -11,7 +11,6 @@ public class Mutant : ScriptableObject
     public float movespeed;
     public int attackDamage;
     public int range;
-    public int mana;
     public string team;
     TypeAndClassHandler.unitTyp myTyp;
     TypeAndClassHandler.unitClass myClass;
