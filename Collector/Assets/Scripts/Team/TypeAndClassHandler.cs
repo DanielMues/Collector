@@ -5,26 +5,46 @@ using System;
 
 public class TypeAndClassHandler : MonoBehaviour
 {
-    public enum unitTyp { masked, spicked, hardened }
-    public enum unitClass { bird, turtle }
+    public enum unitType { none, aggressive, amphibian, ancient, diggers, fire, fly, ice, magic, nightactive, poisenous, queen, rainbow, shell, shellbreakers, slow, sound }
 
-    private List<int> threshHoldBird;
-    private List<int> threshHoldTurtle;
-    private List<int> threshHoldMasked;
-    private List<int> threshHoldSpicked;
-    private List<int> threshHoldHardened;
+    private List<int> threshHoldAggressive;
+    private List<int> threshHoldAmphibian;
+    private List<int> threshHoldAncient;
+    private List<int> threshHoldDiggers;
+    private List<int> threshHoldFire;
+    private List<int> threshHoldFly;
+    private List<int> threshHoldIce;
+    private List<int> threshHoldMagic;
+    private List<int> threshHoldNightactive;
+    private List<int> threshHoldPoisenous;
+    private List<int> threshHoldQueen;
+    private List<int> threshHoldRainbow;
+    private List<int> threshHoldShell;
+    private List<int> threshHoldShellbreakers;
+    private List<int> threshHoldSlow;
+    private List<int> threshHoldSound;
 
-    // class counter
-    private int counterBird;
-    private int counterTurtle;
 
-    // type counter
-    private int counterMasked;
-    private int counterSpicked;
-    private int counterHardened;
+    private int counterAggresive;
+    private int counterAmphibian;
+    private int counterAncient;
+    private int counterDiggers;
+    private int counterFire;
+    private int counterFly;
+    private int counterIce;
+    private int counterMagic;
+    private int counterNightactive;
+    private int counterPoisenous;
+    private int counterQueen;
+    private int counterRainbow;
+    private int counterShell;
+    private int counterShellbreakers;
+    private int counterSlow;
+    private int counterSound;
 
-    List<unitClass> teamClasses;
-    List<unitTyp> teamTypes;
+    
+
+    List<unitType> teamTypes;
     TypeAndClassEventHandler typeAndClassEventHandler;
     // Start is called before the first frame update
     void Start()
@@ -33,8 +53,7 @@ public class TypeAndClassHandler : MonoBehaviour
         typeAndClassEventHandler.createTeam += CreateTeamComb;
         typeAndClassEventHandler.SetTypeAndClass += AddTypeAndClass;
         typeAndClassEventHandler.RemoveTypeAndClass += RemoveTypeAndClass;
-        teamClasses = new List<unitClass>();
-        teamTypes = new List<unitTyp>();
+        teamTypes = new List<unitType>();
         ResetAllCounter();
         CreateAllThreshholds();
     }
@@ -49,8 +68,9 @@ public class TypeAndClassHandler : MonoBehaviour
     {
         if (args.GetTeamName() == this.name)
         {
-            teamClasses.Add(args.GetClass());
-            teamTypes.Add(args.GetType());
+            teamTypes.Add(args.GetFirstType());
+            teamTypes.Add(args.GetSecondType());
+            teamTypes.Add(args.GetThirdType());
         }
     }
 
@@ -58,41 +78,65 @@ public class TypeAndClassHandler : MonoBehaviour
     {
         if (args.GetTeamName() == this.name) 
         {
-            teamClasses.Remove(args.GetClass());
-            teamTypes.Remove(args.GetType());
-        }
-    }
-
-    private void CountClasses()
-    {
-        foreach(unitClass class_ in teamClasses)
-        {
-            switch (class_)
-            {
-                case unitClass.bird:
-                    counterBird += 1;
-                    break;
-                case unitClass.turtle:
-                    counterTurtle += 1;
-                    break;
-            }
+            teamTypes.Remove(args.GetFirstType());
+            teamTypes.Remove(args.GetSecondType());
+            teamTypes.Remove(args.GetThirdType());
         }
     }
 
     private void CountTypes()
     {
-        foreach (unitTyp type in teamTypes)
+        foreach (unitType type in teamTypes)
         {
             switch (type)
             {
-                case unitTyp.masked:
-                    counterMasked += 1;
+                case unitType.aggressive:
+                    counterIce += 1;
                     break;
-                case unitTyp.spicked:
-                    counterSpicked += 1;
+                case unitType.amphibian:
+                    counterIce += 1;
                     break;
-                case unitTyp.hardened:
-                    counterHardened += 1;
+                case unitType.ancient:
+                    counterIce += 1;
+                    break;
+                case unitType.diggers:
+                    counterIce += 1;
+                    break;
+                case unitType.fire:
+                    counterIce += 1;
+                    break;
+                case unitType.fly:
+                    counterIce += 1;
+                    break;
+                case unitType.ice:
+                    counterIce += 1;
+                    break;
+                case unitType.magic:
+                    counterIce += 1;
+                    break;
+                case unitType.nightactive:
+                    counterIce += 1;
+                    break;
+                case unitType.poisenous:
+                    counterIce += 1;
+                    break;
+                case unitType.queen:
+                    counterIce += 1;
+                    break;
+                case unitType.rainbow:
+                    counterIce += 1;
+                    break;
+                case unitType.shell:
+                    counterIce += 1;
+                    break;
+                case unitType.shellbreakers:
+                    counterIce += 1;
+                    break;
+                case unitType.slow:
+                    counterIce += 1;
+                    break;
+                case unitType.sound:
+                    counterIce += 1;
                     break;
             }
         }
@@ -100,15 +144,16 @@ public class TypeAndClassHandler : MonoBehaviour
 
     public void CreateTeamComb(object sender, EventArgs args)
     {
-        CountClasses();
+        //counting
         CountTypes();
-        // class
-        if(counterBird > 0)
+        
+        // buffsending
+        if(counterAggresive > 0)
         {
             int amount = 0;
-            foreach(int threshhold in threshHoldBird)
+            foreach(int threshhold in threshHoldAggressive)
             {
-                if(counterBird >= threshhold)
+                if(counterAggresive >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -117,14 +162,14 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            typeAndClassEventHandler.sendBirdBuff(amount);
+            // to-do send buff
         }
-        if(counterTurtle > 0)
+        if (counterAmphibian > 0)
         {
             int amount = 0;
-            foreach (int threshhold in threshHoldTurtle)
+            foreach (int threshhold in threshHoldAmphibian)
             {
-                if (counterTurtle >= threshhold)
+                if (counterAmphibian >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -133,15 +178,14 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            typeAndClassEventHandler.sendTurtleBuff(amount);
+            // to-do send buff
         }
-        //type
-        if(counterMasked > 0)
+        if (counterAncient > 0)
         {
             int amount = 0;
-            foreach (int threshhold in threshHoldMasked)
+            foreach (int threshhold in threshHoldAncient)
             {
-                if (counterMasked >= threshhold)
+                if (counterAncient >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -150,14 +194,14 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            typeAndClassEventHandler.sendMaskedBuff(amount);
+            // to-do send buff
         }
-        if(counterSpicked > 0)
+        if (counterDiggers > 0)
         {
             int amount = 0;
-            foreach (int threshhold in threshHoldSpicked)
+            foreach (int threshhold in threshHoldDiggers)
             {
-                if (counterSpicked >= threshhold)
+                if (counterDiggers >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -166,14 +210,14 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            typeAndClassEventHandler.sendBirdBuff(amount);
+            // to-do send buff
         }
-        if(counterHardened > 0)
+        if (counterFire > 0)
         {
             int amount = 0;
-            foreach (int threshhold in threshHoldHardened)
+            foreach (int threshhold in threshHoldFire)
             {
-                if (counterHardened >= threshhold)
+                if (counterFire >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -182,70 +226,308 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            typeAndClassEventHandler.sendHardenedBuff(amount);
+            // to-do send buff
+        }
+        if (counterFly > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldFly)
+            {
+                if (counterFly >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterIce > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldIce)
+            {
+                if (counterIce >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterMagic > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldMagic)
+            {
+                if (counterMagic >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterNightactive > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldNightactive)
+            {
+                if (counterNightactive >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterPoisenous > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldPoisenous)
+            {
+                if (counterPoisenous >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterQueen > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldQueen)
+            {
+                if (counterQueen >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterRainbow > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldRainbow)
+            {
+                if (counterRainbow >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterShell > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldShell)
+            {
+                if (counterShell >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterShellbreakers > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldShellbreakers)
+            {
+                if (counterShellbreakers >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterSlow > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldSlow)
+            {
+                if (counterSlow >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
+        }
+        if (counterSound > 0)
+        {
+            int amount = 0;
+            foreach (int threshhold in threshHoldSound)
+            {
+                if (counterSound >= threshhold)
+                {
+                    amount = threshhold;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // to-do send buff
         }
     }
 
     private void ResetAllCounter()
     {
-        counterBird = 0;
-        counterTurtle = 0;
-        counterMasked = 0;
-        counterSpicked = 0;
-        counterHardened = 0;
-    }
+        counterAggresive = 0;
+        counterAmphibian = 0;
+        counterAncient = 0;
+        counterDiggers = 0;
+        counterFire = 0;
+        counterIce = 0;
+        counterFly = 0;
+        counterMagic = 0;
+        counterNightactive = 0;
+        counterPoisenous = 0;
+        counterQueen = 0;
+        counterRainbow = 0;
+        counterShell = 0;
+        counterShellbreakers = 0;
+        counterSlow = 0;
+        counterSound = 0;
+}
+
+    // threshholds
 
     private void CreateAllThreshholds()
     {
-        //classes
-        CreateBirdThresholds();
-        CreateTurtleThresholds();
-        //types
-        CreateMaskedThresholds();
-        CreateHardenedThresholds();
-        CreateSpickedThresholds();
+
     }
 
-    // class threshholds
-    private void CreateBirdThresholds()
+    private void CreateAggressiveThresholds()
     {
-        threshHoldBird = new List<int>();
-        threshHoldBird.Add(2);
-        threshHoldBird.Add(4);
-        threshHoldBird.Add(6);
+        threshHoldAggressive = new List<int>();
+        threshHoldAggressive.Add(2);
     }
 
-    private void CreateTurtleThresholds()
+    private void CreateAmphibianThresholds()
     {
-        threshHoldTurtle = new List<int>();
-        threshHoldTurtle.Add(2);
-        threshHoldTurtle.Add(4);
-        threshHoldTurtle.Add(6);
+        threshHoldAmphibian = new List<int>();
+        threshHoldAmphibian.Add(2);
     }
 
-    // type threshholds
-
-    private void CreateMaskedThresholds()
+    private void CreateAncientThresholds()
     {
-        threshHoldMasked = new List<int>();
-        threshHoldMasked.Add(2);
-        threshHoldMasked.Add(4);
-        threshHoldMasked.Add(6);
+        threshHoldAncient = new List<int>();
+        threshHoldAncient.Add(2);
     }
 
-    private void CreateSpickedThresholds()
+    private void CreateDiggersThresholds()
     {
-        threshHoldSpicked = new List<int>();
-        threshHoldSpicked.Add(2);
-        threshHoldSpicked.Add(4);
-        threshHoldSpicked.Add(6);
+        threshHoldDiggers = new List<int>();
+        threshHoldDiggers.Add(2);
     }
 
-    private void CreateHardenedThresholds()
+    private void CreateFireThresholds()
     {
-        threshHoldHardened = new List<int>();
-        threshHoldHardened.Add(2);
-        threshHoldHardened.Add(4);
-        threshHoldHardened.Add(6);
+        threshHoldFire = new List<int>();
+        threshHoldFire.Add(2);
     }
+
+    private void CreateFlyThresholds()
+    {
+        threshHoldFly = new List<int>();
+        threshHoldFly.Add(2);
+    }
+
+    private void CreateIceThresholds()
+    {
+        threshHoldIce = new List<int>();
+        threshHoldIce.Add(2);
+    }
+
+    private void CreateMagicThresholds()
+    {
+        threshHoldMagic = new List<int>();
+        threshHoldMagic.Add(2);
+    }
+
+    private void CreateNightactiveThresholds()
+    {
+        threshHoldNightactive = new List<int>();
+        threshHoldNightactive.Add(2);
+    }
+
+    private void CreatePoisenousThresholds()
+    {
+        threshHoldPoisenous = new List<int>();
+        threshHoldPoisenous.Add(2);
+    }
+
+    private void CreateQueenThresholds()
+    {
+        threshHoldQueen = new List<int>();
+        threshHoldQueen.Add(2);
+    }
+
+    private void CreateRainbowThresholds()
+    {
+        threshHoldRainbow = new List<int>();
+        threshHoldRainbow.Add(2);
+    }
+
+    private void CreateShellThresholds()
+    {
+        threshHoldShell = new List<int>();
+        threshHoldShell.Add(2);
+    }
+
+    private void CreateShellbreakersThresholds()
+    {
+        threshHoldShellbreakers = new List<int>();
+        threshHoldShellbreakers.Add(2);
+    }
+
+    private void CreateSlowThresholds()
+    {
+        threshHoldSlow= new List<int>();
+        threshHoldSlow.Add(2);
+    }
+
+    private void CreateSoundThresholds()
+    {
+        threshHoldSound = new List<int>();
+        threshHoldSound.Add(2);
+    }
+
+
 }

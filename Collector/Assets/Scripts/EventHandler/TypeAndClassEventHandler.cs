@@ -14,25 +14,32 @@ public class TypeAndClassEventHandler : MonoBehaviour
 
     public class UnitTypeAndClass: EventArgs
     {
-        private TypeAndClassHandler.unitClass unitClass;
-        private TypeAndClassHandler.unitTyp unitType;
+        private TypeAndClassHandler.unitType firstUnitType;
+        private TypeAndClassHandler.unitType secondUnitType;
+        private TypeAndClassHandler.unitType thirdUnitType;
         private string teamName;
 
-        public UnitTypeAndClass(TypeAndClassHandler.unitTyp thisType, TypeAndClassHandler.unitClass thisClass, string team)
+        public UnitTypeAndClass(TypeAndClassHandler.unitType thisFirstType, TypeAndClassHandler.unitType thisSecondType, TypeAndClassHandler.unitType thisThirdType, string team)
         {
-            unitClass = thisClass;
-            unitType = thisType;
+            firstUnitType = thisFirstType;
+            secondUnitType = thisSecondType;
+            thirdUnitType = thisThirdType;
             teamName = team;
         }
 
-        public TypeAndClassHandler.unitClass GetClass()
+        public TypeAndClassHandler.unitType GetFirstType()
         {
-            return unitClass;
+            return firstUnitType;
         }
 
-        public TypeAndClassHandler.unitTyp GetType()
+        public TypeAndClassHandler.unitType GetSecondType()
         {
-            return unitType;
+            return secondUnitType;
+        }
+
+        public TypeAndClassHandler.unitType GetThirdType()
+        {
+            return thirdUnitType;
         }
 
         public string GetTeamName()
@@ -43,16 +50,16 @@ public class TypeAndClassEventHandler : MonoBehaviour
 
     public event EventHandler<UnitTypeAndClass> SetTypeAndClass;
 
-    public void setUnitTypeAndClass(TypeAndClassHandler.unitClass myClass, TypeAndClassHandler.unitTyp myType, string team)
+    public void setUnitTypeAndClass(TypeAndClassHandler.unitType myFirstType, TypeAndClassHandler.unitType mySecondType, TypeAndClassHandler.unitType myThirdType, string team)
     {
-        SetTypeAndClass?.Invoke(this, new UnitTypeAndClass(myType, myClass, team));
+        SetTypeAndClass?.Invoke(this, new UnitTypeAndClass(myFirstType, mySecondType, myThirdType, team));
     }
 
     public event EventHandler<UnitTypeAndClass> RemoveTypeAndClass;
 
-    public void deleteUnitTypeAndClass(TypeAndClassHandler.unitClass myClass, TypeAndClassHandler.unitTyp myType, string team)
+    public void deleteUnitTypeAndClass(TypeAndClassHandler.unitType myFirstType, TypeAndClassHandler.unitType mySecondType, TypeAndClassHandler.unitType myThirdType, string team)
     {
-        RemoveTypeAndClass?.Invoke(this, new UnitTypeAndClass(myType, myClass, team));
+        RemoveTypeAndClass?.Invoke(this, new UnitTypeAndClass(myFirstType, mySecondType, myThirdType, team));
     }
     
     public class AmountOfUnits: EventArgs
@@ -70,6 +77,7 @@ public class TypeAndClassEventHandler : MonoBehaviour
         }
     }
 
+    // to do change
     public event EventHandler<AmountOfUnits> birdBuff;
 
     public void sendBirdBuff(int amount)
