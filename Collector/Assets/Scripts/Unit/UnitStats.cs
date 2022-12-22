@@ -68,11 +68,6 @@ public class UnitStats : MonoBehaviour
         currentMana = startMana;
         currentShield = 0;
         typeAndClassEventHandler = TypeAndClassEventHandler.instance;
-        typeAndClassEventHandler.birdBuff += setBirdBuff;
-        typeAndClassEventHandler.turtleBuff += setTurtleBuff;
-        typeAndClassEventHandler.spickedBuff += setSpickedBuff;
-        typeAndClassEventHandler.maskedBuff += setMaskedBuff;
-        typeAndClassEventHandler.hardenedBuff += setHardenedBuff;
     }
 
     private void SetFightValues()
@@ -143,17 +138,17 @@ public class UnitStats : MonoBehaviour
         return manaProAttack;
     }
 
-    public TypeAndClassHandler.unitType GetFirstUnitTyp()
+    public TypeAndClassHandler.unitType GetFirstUnitType()
     {
         return myFirstType;
     }
 
-    public TypeAndClassHandler.unitType GetSecondUnitTyp()
+    public TypeAndClassHandler.unitType GetSecondUnitType()
     {
         return mySecondType;
     }
 
-    public TypeAndClassHandler.unitType GetThirdUnitTyp()
+    public TypeAndClassHandler.unitType GetThirdUnitType()
     {
         return myThirdType;
     }
@@ -308,26 +303,5 @@ public class UnitStats : MonoBehaviour
     private void Die()
     {
         Destroy(this.gameObject);
-    }
-
-    // buffs
-    public void setBirdBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-    }
-
-    public void setTurtleBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-    }
-
-    public void setMaskedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-    }
-
-    public void setHardenedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-    }
-
-    public void setSpickedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
     }
 }

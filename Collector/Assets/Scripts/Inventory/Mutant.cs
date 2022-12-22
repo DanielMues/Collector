@@ -12,6 +12,7 @@ public class Mutant : ScriptableObject
     public int attackDamage;
     public int range;
     public string team;
-    TypeAndClassHandler.unitTyp myTyp;
-    TypeAndClassHandler.unitClass myClass;
+    TypeAndClassHandler.unitType myFirstType;
+    TypeAndClassHandler.unitType mySecondType;
+    TypeAndClassHandler.unitType myThirdType;
 }

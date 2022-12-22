@@ -162,7 +162,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendAggressiveBuff(amount);
         }
         if (counterAmphibian > 0)
         {
@@ -178,7 +178,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendAmphibianBuff(amount);
         }
         if (counterAncient > 0)
         {
@@ -194,7 +194,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendAncientBuff(amount);
         }
         if (counterDiggers > 0)
         {
@@ -210,7 +210,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendDiggersBuff(amount);
         }
         if (counterFire > 0)
         {
@@ -226,7 +226,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendFireBuff(amount);
         }
         if (counterFly > 0)
         {
@@ -242,7 +242,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendFlyBuff(amount);
         }
         if (counterIce > 0)
         {
@@ -258,7 +258,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendIceBuff(amount);
         }
         if (counterMagic > 0)
         {
@@ -274,7 +274,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendMagicBuff(amount);
         }
         if (counterNightactive > 0)
         {
@@ -290,7 +290,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendNightActiveBuff(amount);
         }
         if (counterPoisenous > 0)
         {
@@ -306,7 +306,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendPoisenousBuff(amount);
         }
         if (counterQueen > 0)
         {
@@ -322,7 +322,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendQueenBuff(amount);
         }
         if (counterRainbow > 0)
         {
@@ -338,7 +338,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendRainbowBuff(amount);
         }
         if (counterShell > 0)
         {
@@ -354,7 +354,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendShellBuff(amount);
         }
         if (counterShellbreakers > 0)
         {
@@ -370,7 +370,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendShellBreakerBuff(amount);
         }
         if (counterSlow > 0)
         {
@@ -386,7 +386,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendSlowBuff(amount);
         }
         if (counterSound > 0)
         {
@@ -402,7 +402,7 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            // to-do send buff
+            typeAndClassEventHandler.SendSoundBuff(amount);
         }
     }
 
@@ -430,7 +430,22 @@ public class TypeAndClassHandler : MonoBehaviour
 
     private void CreateAllThreshholds()
     {
-
+        CreateAggressiveThresholds();
+        CreateAmphibianThresholds();
+        CreateAncientThresholds();
+        CreateDiggersThresholds();
+        CreateFireThresholds();
+        CreateFlyThresholds();
+        CreateIceThresholds();
+        CreateMagicThresholds();
+        CreateNightactiveThresholds();
+        CreatePoisenousThresholds();
+        CreateQueenThresholds();
+        CreateRainbowThresholds();
+        CreateShellbreakersThresholds();
+        CreateShellThresholds();
+        CreateSlowThresholds();
+        CreateSoundThresholds();
     }
 
     private void CreateAggressiveThresholds()
@@ -528,6 +543,4 @@ public class TypeAndClassHandler : MonoBehaviour
         threshHoldSound = new List<int>();
         threshHoldSound.Add(2);
     }
-
-
 }
