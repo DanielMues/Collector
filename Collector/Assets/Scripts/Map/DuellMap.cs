@@ -273,17 +273,17 @@ public class DuellMap : MonoBehaviour
                 if (currentUnit == null || currentUnit == args.unit)
                 {
                     map.SetUnit(args.unit, args.worldPosition);
-                    typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetUnitClass(), args.unit.GetComponent<UnitStats>().GetUnitTyp(), args.unit.GetComponent<UnitStats>().GetTeam());
+                    typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetFirstUnitType(), args.unit.GetComponent<UnitStats>().GetSecondUnitType(), args.unit.GetComponent<UnitStats>().GetThirdUnitType(), args.unit.GetComponent<UnitStats>().GetTeam());
                     args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
                 }
                 else
                 {
                     map.SetUnit(args.unit, args.worldPosition);
-                    typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetUnitClass(), args.unit.GetComponent<UnitStats>().GetUnitTyp(), args.unit.GetComponent<UnitStats>().GetTeam());
+                    typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetFirstUnitType(), args.unit.GetComponent<UnitStats>().GetSecondUnitType(), args.unit.GetComponent<UnitStats>().GetThirdUnitType(), args.unit.GetComponent<UnitStats>().GetTeam());
                     Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
                     args.unit.transform.position = currentMapPosition;
                     customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
-                    typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetUnitClass(), currentUnit.GetComponent<UnitStats>().GetUnitTyp(), currentUnit.GetComponent<UnitStats>().GetTeam());
+                    typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetFirstUnitType(), currentUnit.GetComponent<UnitStats>().GetSecondUnitType(), currentUnit.GetComponent<UnitStats>().GetThirdUnitType(), currentUnit.GetComponent<UnitStats>().GetTeam());
                 }
             }
             catch (IndexOutOfRangeException)
@@ -303,7 +303,7 @@ public class DuellMap : MonoBehaviour
                 if (args.unit == currentUnit)
                 {
                     map.DeleteUnit(args.worldPosition);
-                    typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetUnitClass(), currentUnit.GetComponent<UnitStats>().GetUnitTyp(), currentUnit.GetComponent<UnitStats>().GetTeam());
+                    typeAndClassEventHandler.deleteUnitTypeAndClass(currentUnit.GetComponent<UnitStats>().GetFirstUnitType(), currentUnit.GetComponent<UnitStats>().GetSecondUnitType(), currentUnit.GetComponent<UnitStats>().GetThirdUnitType(), currentUnit.GetComponent<UnitStats>().GetTeam());
                 }
             }
             catch (IndexOutOfRangeException)

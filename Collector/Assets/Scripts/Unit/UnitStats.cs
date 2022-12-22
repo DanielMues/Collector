@@ -49,9 +49,11 @@ public class UnitStats : MonoBehaviour
 
     //types and classes
     [SerializeField]
-    TypeAndClassHandler.unitTyp myTyp;
+    TypeAndClassHandler.unitType myFirstType;
     [SerializeField]
-    TypeAndClassHandler.unitClass myClass;
+    TypeAndClassHandler.unitType mySecondType;
+    [SerializeField]
+    TypeAndClassHandler.unitType myThirdType;
 
     TypeAndClassEventHandler typeAndClassEventHandler;
     private void Update()
@@ -66,11 +68,6 @@ public class UnitStats : MonoBehaviour
         currentMana = startMana;
         currentShield = 0;
         typeAndClassEventHandler = TypeAndClassEventHandler.instance;
-        typeAndClassEventHandler.birdBuff += setBirdBuff;
-        typeAndClassEventHandler.turtleBuff += setTurtleBuff;
-        typeAndClassEventHandler.spickedBuff += setSpickedBuff;
-        typeAndClassEventHandler.maskedBuff += setMaskedBuff;
-        typeAndClassEventHandler.hardenedBuff += setHardenedBuff;
     }
 
     private void SetFightValues()
@@ -141,14 +138,19 @@ public class UnitStats : MonoBehaviour
         return manaProAttack;
     }
 
-    public TypeAndClassHandler.unitTyp GetUnitTyp()
+    public TypeAndClassHandler.unitType GetFirstUnitType()
     {
-        return myTyp;
+        return myFirstType;
     }
 
-    public TypeAndClassHandler.unitClass GetUnitClass()
+    public TypeAndClassHandler.unitType GetSecondUnitType()
     {
-        return myClass;
+        return mySecondType;
+    }
+
+    public TypeAndClassHandler.unitType GetThirdUnitType()
+    {
+        return myThirdType;
     }
 
     // set functions
@@ -301,50 +303,5 @@ public class UnitStats : MonoBehaviour
     private void Die()
     {
         Destroy(this.gameObject);
-    }
-
-    // buffs
-    public void setBirdBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-        if(myClass == TypeAndClassHandler.unitClass.bird)
-        {
-            attackSpeed -= 0.1f * args.GetAmount();
-        }
-    }
-
-    public void setTurtleBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-        if(myClass == TypeAndClassHandler.unitClass.turtle)
-        {
-            moveSpeed += 0.2f;
-            SetShield(100 * args.GetAmount());
-        }
-    }
-
-    public void setMaskedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-        if (myTyp == TypeAndClassHandler.unitTyp.masked)
-        {
-            range += 1 * args.GetAmount();
-        }
-    }
-
-    public void setHardenedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-        if (myTyp == TypeAndClassHandler.unitTyp.hardened)
-        {
-            maxHealthPoints += 100 * args.GetAmount();
-            currentHealthPoints = maxHealthPoints;
-            UpdateHealthBar();
-            UpdateShieldBar();
-        }
-    }
-
-    public void setSpickedBuff(object sender, TypeAndClassEventHandler.AmountOfUnits args)
-    {
-        if (myTyp == TypeAndClassHandler.unitTyp.spicked)
-        {
-            attackDamage += 10 * args.GetAmount();
-        }
     }
 }
