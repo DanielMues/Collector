@@ -182,8 +182,8 @@ public class DuellMap : MonoBehaviour
     // map
     public long sizeX = 2; // size of cell in x direction
     public long sizeY = 2; // size of cell in y direction
-    private int xSize = 8; // amount of cells in x direction
-    private int ySize = 8; // amount of cells in y direction
+    public int xSize = 8; // amount of cells in x direction
+    public int ySize = 8; // amount of cells in y direction
     public GameObject backgroundTilePrefab;
     public Vector3 worldPosition = new Vector3(0, 0, 0);
     private Map map;
