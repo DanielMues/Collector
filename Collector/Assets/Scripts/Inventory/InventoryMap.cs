@@ -5,8 +5,8 @@ using System;
 
 public class InventoryMap: MonoBehaviour
 {
-    public long cellSizeX = 2;
-    public long cellSizeY = 2;
+    public float cellSizeX = 2f;
+    public float cellSizeY = 2f;
     public int cellAmountX = 2;
     public int cellAmountY = 7;
     public Vector3 worldPosition;
