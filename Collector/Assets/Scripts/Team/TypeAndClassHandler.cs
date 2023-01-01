@@ -7,44 +7,57 @@ public class TypeAndClassHandler : MonoBehaviour
 {
     public enum unitType { none, aggressive, amphibian, ancient, diggers, fire, fly, ice, magic, nightactive, poisenous, queen, rainbow, shell, shellbreakers, slow, sound }
 
-    private List<int> threshHoldAggressive;
-    private List<int> threshHoldAmphibian;
-    private List<int> threshHoldAncient;
-    private List<int> threshHoldDiggers;
-    private List<int> threshHoldFire;
-    private List<int> threshHoldFly;
-    private List<int> threshHoldIce;
-    private List<int> threshHoldMagic;
-    private List<int> threshHoldNightactive;
-    private List<int> threshHoldPoisenous;
-    private List<int> threshHoldQueen;
-    private List<int> threshHoldRainbow;
-    private List<int> threshHoldShell;
-    private List<int> threshHoldShellbreakers;
-    private List<int> threshHoldSlow;
-    private List<int> threshHoldSound;
+    List<TypeStruct> typeStructs;
 
+    public class TypeStruct
+    {
+        public TypeStruct(unitType thisType, List<int> thisThreshhold, int thisCounter)
+        {
+            type = thisType;
+            threshhold = thisThreshhold;
+            counter = thisCounter;
+        }
+        private unitType type;
+        private List<int> threshhold;
+        private int counter;
 
-    private int counterAggresive;
-    private int counterAmphibian;
-    private int counterAncient;
-    private int counterDiggers;
-    private int counterFire;
-    private int counterFly;
-    private int counterIce;
-    private int counterMagic;
-    private int counterNightactive;
-    private int counterPoisenous;
-    private int counterQueen;
-    private int counterRainbow;
-    private int counterShell;
-    private int counterShellbreakers;
-    private int counterSlow;
-    private int counterSound;
+        public unitType GetStructType()
+        {
+            return type;
+        }
 
-    
+        public void AddToThreshHold(int amount)
+        {
+            threshhold.Add(amount);
+        }
 
-    List<unitType> teamTypes;
+        public void SetThreshHold(List<int> newThreshhold)
+        {
+            threshhold = newThreshhold;
+        }
+
+        public List<int> GetThreshhold()
+        {
+            return threshhold;
+        }
+
+        public void ResetCounter()
+        {
+            counter = 0;
+        }
+
+        public void AddtoCount(int amount)
+        {
+            counter += amount;
+        }
+
+        public int GetCounter ()
+        {
+            return counter;
+        }
+
+    }
+
     TypeAndClassEventHandler typeAndClassEventHandler;
     // Start is called before the first frame update
     void Start()
@@ -53,24 +66,28 @@ public class TypeAndClassHandler : MonoBehaviour
         typeAndClassEventHandler.createTeam += CreateTeamComb;
         typeAndClassEventHandler.SetTypeAndClass += AddTypeAndClass;
         typeAndClassEventHandler.RemoveTypeAndClass += RemoveTypeAndClass;
-        teamTypes = new List<unitType>();
+        typeStructs = new List<TypeStruct>();
+        InitTypeStruct();
         ResetAllCounter();
         CreateAllThreshholds();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitTypeStruct()
     {
-        
-    }
+        foreach (unitType type in Enum.GetValues(typeof(unitType)))
+        {
+            TypeStruct tempTypeStruct = new TypeStruct(type, new List<int>(), 0);
+            typeStructs.Add(tempTypeStruct);
+        }
+    } 
 
     private void AddTypeAndClass(object sender, TypeAndClassEventHandler.UnitTypeAndClass args)
     {
         if (args.GetTeamName() == this.name)
         {
-            teamTypes.Add(args.GetFirstType());
-            teamTypes.Add(args.GetSecondType());
-            teamTypes.Add(args.GetThirdType());
+            UpdateCountTypes(args.GetFirstType(), true);
+            UpdateCountTypes(args.GetSecondType(), true);
+            UpdateCountTypes(args.GetThirdType(), true);
         }
     }
 
@@ -78,82 +95,54 @@ public class TypeAndClassHandler : MonoBehaviour
     {
         if (args.GetTeamName() == this.name) 
         {
-            teamTypes.Remove(args.GetFirstType());
-            teamTypes.Remove(args.GetSecondType());
-            teamTypes.Remove(args.GetThirdType());
+            UpdateCountTypes(args.GetFirstType(), false);
+            UpdateCountTypes(args.GetSecondType(), false);
+            UpdateCountTypes(args.GetThirdType(), false);
         }
     }
 
-    private void CountTypes()
+    private void UpdateCountTypes(unitType newEntry, bool add)
     {
-        foreach (unitType type in teamTypes)
+        int amount;
+        if (add)
         {
-            switch (type)
+            amount = 1;
+        }
+        else
+        {
+            amount = -1;
+        }
+
+        foreach (TypeStruct typeStruct in typeStructs)
+        {
+            if (newEntry == typeStruct.GetStructType())
             {
-                case unitType.aggressive:
-                    counterIce += 1;
-                    break;
-                case unitType.amphibian:
-                    counterIce += 1;
-                    break;
-                case unitType.ancient:
-                    counterIce += 1;
-                    break;
-                case unitType.diggers:
-                    counterIce += 1;
-                    break;
-                case unitType.fire:
-                    counterIce += 1;
-                    break;
-                case unitType.fly:
-                    counterIce += 1;
-                    break;
-                case unitType.ice:
-                    counterIce += 1;
-                    break;
-                case unitType.magic:
-                    counterIce += 1;
-                    break;
-                case unitType.nightactive:
-                    counterIce += 1;
-                    break;
-                case unitType.poisenous:
-                    counterIce += 1;
-                    break;
-                case unitType.queen:
-                    counterIce += 1;
-                    break;
-                case unitType.rainbow:
-                    counterIce += 1;
-                    break;
-                case unitType.shell:
-                    counterIce += 1;
-                    break;
-                case unitType.shellbreakers:
-                    counterIce += 1;
-                    break;
-                case unitType.slow:
-                    counterIce += 1;
-                    break;
-                case unitType.sound:
-                    counterIce += 1;
-                    break;
+                typeStruct.AddtoCount(amount);
+                int count = 0;
+                foreach (int threshhold in typeStruct.GetThreshhold())
+                {
+                    if (typeStruct.GetCounter() >= threshhold)
+                    {
+                        count = threshhold;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                typeAndClassEventHandler.SendIconUpdate(typeStruct.GetStructType(), this.name, count);
             }
         }
     }
 
     public void CreateTeamComb(object sender, EventArgs args)
     {
-        //counting
-        CountTypes();
-        
-        // buffsending
-        if(counterAggresive > 0)
+        foreach (TypeStruct typeStruct in typeStructs)
         {
             int amount = 0;
-            foreach(int threshhold in threshHoldAggressive)
+            foreach (int threshhold in typeStruct.GetThreshhold())
             {
-                if(counterAggresive >= threshhold)
+                if (typeStruct.GetCounter() >= threshhold)
                 {
                     amount = threshhold;
                 }
@@ -162,385 +151,191 @@ public class TypeAndClassHandler : MonoBehaviour
                     break;
                 }
             }
-            typeAndClassEventHandler.SendAggressiveBuff(amount);
-        }
-        if (counterAmphibian > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldAmphibian)
+            if (amount > 0)
             {
-                if (counterAmphibian >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
+                typeAndClassEventHandler.SendTypeBuff(typeStruct.GetStructType(), this.name, amount);
             }
-            typeAndClassEventHandler.SendAmphibianBuff(amount);
-        }
-        if (counterAncient > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldAncient)
-            {
-                if (counterAncient >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendAncientBuff(amount);
-        }
-        if (counterDiggers > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldDiggers)
-            {
-                if (counterDiggers >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendDiggersBuff(amount);
-        }
-        if (counterFire > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldFire)
-            {
-                if (counterFire >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendFireBuff(amount);
-        }
-        if (counterFly > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldFly)
-            {
-                if (counterFly >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendFlyBuff(amount);
-        }
-        if (counterIce > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldIce)
-            {
-                if (counterIce >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendIceBuff(amount);
-        }
-        if (counterMagic > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldMagic)
-            {
-                if (counterMagic >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendMagicBuff(amount);
-        }
-        if (counterNightactive > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldNightactive)
-            {
-                if (counterNightactive >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendNightActiveBuff(amount);
-        }
-        if (counterPoisenous > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldPoisenous)
-            {
-                if (counterPoisenous >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendPoisenousBuff(amount);
-        }
-        if (counterQueen > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldQueen)
-            {
-                if (counterQueen >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendQueenBuff(amount);
-        }
-        if (counterRainbow > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldRainbow)
-            {
-                if (counterRainbow >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendRainbowBuff(amount);
-        }
-        if (counterShell > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldShell)
-            {
-                if (counterShell >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendShellBuff(amount);
-        }
-        if (counterShellbreakers > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldShellbreakers)
-            {
-                if (counterShellbreakers >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendShellBreakerBuff(amount);
-        }
-        if (counterSlow > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldSlow)
-            {
-                if (counterSlow >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendSlowBuff(amount);
-        }
-        if (counterSound > 0)
-        {
-            int amount = 0;
-            foreach (int threshhold in threshHoldSound)
-            {
-                if (counterSound >= threshhold)
-                {
-                    amount = threshhold;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            typeAndClassEventHandler.SendSoundBuff(amount);
         }
     }
 
     private void ResetAllCounter()
     {
-        counterAggresive = 0;
-        counterAmphibian = 0;
-        counterAncient = 0;
-        counterDiggers = 0;
-        counterFire = 0;
-        counterIce = 0;
-        counterFly = 0;
-        counterMagic = 0;
-        counterNightactive = 0;
-        counterPoisenous = 0;
-        counterQueen = 0;
-        counterRainbow = 0;
-        counterShell = 0;
-        counterShellbreakers = 0;
-        counterSlow = 0;
-        counterSound = 0;
+        foreach (TypeStruct typeStruct in typeStructs)
+        {
+            typeStruct.ResetCounter();
+        }
 }
 
     // threshholds
 
     private void CreateAllThreshholds()
     {
-        CreateAggressiveThresholds();
-        CreateAmphibianThresholds();
-        CreateAncientThresholds();
-        CreateDiggersThresholds();
-        CreateFireThresholds();
-        CreateFlyThresholds();
-        CreateIceThresholds();
-        CreateMagicThresholds();
-        CreateNightactiveThresholds();
-        CreatePoisenousThresholds();
-        CreateQueenThresholds();
-        CreateRainbowThresholds();
-        CreateShellbreakersThresholds();
-        CreateShellThresholds();
-        CreateSlowThresholds();
-        CreateSoundThresholds();
+
+        foreach (TypeStruct typeStruct in typeStructs)
+        {
+            switch (typeStruct.GetStructType())
+            {
+                case unitType.aggressive:
+                    typeStruct.SetThreshHold(CreateAggressiveThresholds());
+                    break;
+                case unitType.amphibian:
+                    typeStruct.SetThreshHold(CreateAmphibianThresholds());
+                    break;
+                case unitType.ancient:
+                    typeStruct.SetThreshHold(CreateAncientThresholds());
+                    break;
+                case unitType.diggers:
+                    typeStruct.SetThreshHold(CreateDiggersThresholds());
+                    break;
+                case unitType.fire:
+                    typeStruct.SetThreshHold(CreateFireThresholds());
+                    break;
+                case unitType.fly:
+                    typeStruct.SetThreshHold(CreateFlyThresholds());
+                    break;
+                case unitType.ice:
+                    typeStruct.SetThreshHold(CreateIceThresholds());
+                    break;
+                case unitType.magic:
+                    typeStruct.SetThreshHold(CreateMagicThresholds());
+                    break;
+                case unitType.nightactive:
+                    typeStruct.SetThreshHold(CreateNightactiveThresholds());
+                    break;
+                case unitType.poisenous:
+                    typeStruct.SetThreshHold(CreatePoisenousThresholds());
+                    break;
+                case unitType.queen:
+                    typeStruct.SetThreshHold(CreateQueenThresholds());
+                    break;
+                case unitType.rainbow:
+                    typeStruct.SetThreshHold(CreateRainbowThresholds());
+                    break;
+                case unitType.shell:
+                    typeStruct.SetThreshHold(CreateShellThresholds());
+                    break;
+                case unitType.shellbreakers:
+                    typeStruct.SetThreshHold(CreateShellbreakersThresholds());
+                    break;
+                case unitType.slow:
+                    typeStruct.SetThreshHold(CreateSlowThresholds());
+                    break;
+                case unitType.sound:
+                    typeStruct.SetThreshHold(CreateSoundThresholds());
+                    break;
+            }
+        }
     }
 
-    private void CreateAggressiveThresholds()
+    private List<int> CreateAggressiveThresholds()
     {
-        threshHoldAggressive = new List<int>();
-        threshHoldAggressive.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateAmphibianThresholds()
+    private List<int> CreateAmphibianThresholds()
     {
-        threshHoldAmphibian = new List<int>();
-        threshHoldAmphibian.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateAncientThresholds()
+    private List<int> CreateAncientThresholds()
     {
-        threshHoldAncient = new List<int>();
-        threshHoldAncient.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateDiggersThresholds()
+    private List<int> CreateDiggersThresholds()
     {
-        threshHoldDiggers = new List<int>();
-        threshHoldDiggers.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateFireThresholds()
+    private List<int> CreateFireThresholds()
     {
-        threshHoldFire = new List<int>();
-        threshHoldFire.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateFlyThresholds()
+    private List<int> CreateFlyThresholds()
     {
-        threshHoldFly = new List<int>();
-        threshHoldFly.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateIceThresholds()
+    private List<int> CreateIceThresholds()
     {
-        threshHoldIce = new List<int>();
-        threshHoldIce.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateMagicThresholds()
+    private List<int> CreateMagicThresholds()
     {
-        threshHoldMagic = new List<int>();
-        threshHoldMagic.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateNightactiveThresholds()
+    private List<int> CreateNightactiveThresholds()
     {
-        threshHoldNightactive = new List<int>();
-        threshHoldNightactive.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreatePoisenousThresholds()
+    private List<int> CreatePoisenousThresholds()
     {
-        threshHoldPoisenous = new List<int>();
-        threshHoldPoisenous.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateQueenThresholds()
+    private List<int> CreateQueenThresholds()
     {
-        threshHoldQueen = new List<int>();
-        threshHoldQueen.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateRainbowThresholds()
+    private List<int> CreateRainbowThresholds()
     {
-        threshHoldRainbow = new List<int>();
-        threshHoldRainbow.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateShellThresholds()
+    private List<int> CreateShellThresholds()
     {
-        threshHoldShell = new List<int>();
-        threshHoldShell.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateShellbreakersThresholds()
+    private List<int> CreateShellbreakersThresholds()
     {
-        threshHoldShellbreakers = new List<int>();
-        threshHoldShellbreakers.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateSlowThresholds()
+    private List<int> CreateSlowThresholds()
     {
-        threshHoldSlow= new List<int>();
-        threshHoldSlow.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 
-    private void CreateSoundThresholds()
+    private List<int> CreateSoundThresholds()
     {
-        threshHoldSound = new List<int>();
-        threshHoldSound.Add(2);
+        List<int> threshHold = new List<int>();
+        threshHold.Add(2);
+        return threshHold;
     }
 }

@@ -62,13 +62,34 @@ public class TypeAndClassEventHandler : MonoBehaviour
         RemoveTypeAndClass?.Invoke(this, new UnitTypeAndClass(myFirstType, mySecondType, myThirdType, team));
     }
     
-    public class AmountOfUnits: EventArgs
+    public event EventHandler<EventArgs> createTeam;
+
+    public void createTeams()
     {
+        createTeam?.Invoke(this, new EventArgs());
+    }
+
+    public class TypeBuffInformation : EventArgs
+    {
+        private TypeAndClassHandler.unitType type_;
+        private String team_;
         private int amount_;
 
-        public AmountOfUnits(int amount)
+        public TypeBuffInformation(TypeAndClassHandler.unitType type, String team, int amount)
         {
+            type_ = type;
+            team_ = team;
             amount_ = amount;
+        }
+
+        public TypeAndClassHandler.unitType GetTypeType()
+        {
+            return type_;
+        }
+
+        public String GetTeam()
+        {
+            return team_;
         }
 
         public int GetAmount()
@@ -77,45 +98,9 @@ public class TypeAndClassEventHandler : MonoBehaviour
         }
     }
 
-    // to do change
-    public event EventHandler<AmountOfUnits> aggressiveBuff;
-    public event EventHandler<AmountOfUnits> amphibianBuff;
-    public event EventHandler<AmountOfUnits> ancientBuff;
-    public event EventHandler<AmountOfUnits> diggersBuff;
-    public event EventHandler<AmountOfUnits> fireBuff;
-    public event EventHandler<AmountOfUnits> flyBuff;
-    public event EventHandler<AmountOfUnits> iceBuff;
-    public event EventHandler<AmountOfUnits> magicBuff;
-    public event EventHandler<AmountOfUnits> nightactiveBuff;
-    public event EventHandler<AmountOfUnits> poisenousBuff;
-    public event EventHandler<AmountOfUnits> queenBuff;
-    public event EventHandler<AmountOfUnits> rainbowBuff;
-    public event EventHandler<AmountOfUnits> shellBuff;
-    public event EventHandler<AmountOfUnits> shellBreakerBuff;
-    public event EventHandler<AmountOfUnits> slowBuff;
-    public event EventHandler<AmountOfUnits> soundBuff;
+    public event EventHandler<TypeBuffInformation> sendTypeBuff;
+    public event EventHandler<TypeBuffInformation> sendIconUpdate;
 
-    public void SendAggressiveBuff(int amount) { aggressiveBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendAmphibianBuff(int amount) { amphibianBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendAncientBuff(int amount) { ancientBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendDiggersBuff(int amount) { diggersBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendFireBuff(int amount) { fireBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendFlyBuff(int amount) { flyBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendIceBuff(int amount) { iceBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendMagicBuff(int amount) { magicBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendNightActiveBuff(int amount) { nightactiveBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendPoisenousBuff(int amount) { poisenousBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendQueenBuff(int amount) { queenBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendRainbowBuff(int amount) { rainbowBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendShellBuff(int amount) { shellBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendShellBreakerBuff(int amount) { shellBreakerBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendSlowBuff(int amount) { slowBuff?.Invoke(this, new AmountOfUnits(amount)); }
-    public void SendSoundBuff(int amount) { soundBuff?.Invoke(this, new AmountOfUnits(amount)); }
-
-    public event EventHandler<EventArgs> createTeam;
-
-    public void createTeams()
-    {
-        createTeam?.Invoke(this, new EventArgs());
-    }
+    public void SendTypeBuff(TypeAndClassHandler.unitType type, String team, int amount) { sendTypeBuff?.Invoke(this, new TypeBuffInformation(type, team, amount)); }
+    public void SendIconUpdate(TypeAndClassHandler.unitType type, String team, int amount) { sendIconUpdate?.Invoke(this, new TypeBuffInformation(type, team, amount)); }
 }
