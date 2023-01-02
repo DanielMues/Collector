@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3537269534975919032, guid: 2326b295816666d44b5fc82bd6a1403b, type: 3}
+      propertyPath: type
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7950806412591682568, guid: 2326b295816666d44b5fc82bd6a1403b, type: 3}
       propertyPath: m_Name
       value: Amphibian
@@ -25,11 +29,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8896456317304189634, guid: 2326b295816666d44b5fc82bd6a1403b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8896456317304189634, guid: 2326b295816666d44b5fc82bd6a1403b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 8896456317304189634, guid: 2326b295816666d44b5fc82bd6a1403b, type: 3}
       propertyPath: m_LocalPosition.z

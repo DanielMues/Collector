@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6050bee17f9f13e4f817a8396de7d2e0, type: 3}
   m_Name: Mutant2
   m_EditorClassIdentifier: 
-  mutantPrefab: {fileID: 0}
-  healthPoints: 0
-  attackSpeed: 0
-  movespeed: 0
-  attackDamage: 0
-  range: 0
-  team: 
+  mutantPrefab: {fileID: 7132426885074555240, guid: 68b4396b126f743429b8116564539ca4, type: 3}
+  healthPoints: 300
+  attackSpeed: 0.5
+  movespeed: 1
+  attackDamage: 2
+  range: 1
+  team: Player

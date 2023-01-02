@@ -115,7 +115,7 @@ public class TypeAndClassHandler : MonoBehaviour
 
         foreach (TypeStruct typeStruct in typeStructs)
         {
-            if (newEntry == typeStruct.GetStructType())
+            if (newEntry == typeStruct.GetStructType() && newEntry != unitType.none)
             {
                 typeStruct.AddtoCount(amount);
                 int count = 0;

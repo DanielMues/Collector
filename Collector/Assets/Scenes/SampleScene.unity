@@ -885,6 +885,11 @@ MonoBehaviour:
   cellAmountY: 1
   worldPosition: {x: -3, y: 7, z: 0}
   backgroundTilePrefab: {fileID: 3025677711824602067, guid: ca8a847d5de3b8c49a38cbd0bb85eb96, type: 3}
+  iconPrefabs:
+  - {fileID: 9218736463796146842, guid: cb83cd6ef054da54cba1901e9193ca1a, type: 3}
+  - {fileID: 7024913381817853669, guid: f39fd9e48882b3d49816fcc8b2d115a6, type: 3}
+  - {fileID: 3199943039907876409, guid: fdab856c0f46d834fbc36e3a0ca57810, type: 3}
+  team: Player
 --- !u!4 &1571374377
 Transform:
   m_ObjectHideFlags: 0

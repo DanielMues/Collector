@@ -72,10 +72,10 @@ public class TypeAndClassEventHandler : MonoBehaviour
     public class TypeBuffInformation : EventArgs
     {
         private TypeAndClassHandler.unitType type_;
-        private String team_;
+        private string team_;
         private int amount_;
 
-        public TypeBuffInformation(TypeAndClassHandler.unitType type, String team, int amount)
+        public TypeBuffInformation(TypeAndClassHandler.unitType type, string team, int amount)
         {
             type_ = type;
             team_ = team;
@@ -101,6 +101,6 @@ public class TypeAndClassEventHandler : MonoBehaviour
     public event EventHandler<TypeBuffInformation> sendTypeBuff;
     public event EventHandler<TypeBuffInformation> sendIconUpdate;
 
-    public void SendTypeBuff(TypeAndClassHandler.unitType type, String team, int amount) { sendTypeBuff?.Invoke(this, new TypeBuffInformation(type, team, amount)); }
-    public void SendIconUpdate(TypeAndClassHandler.unitType type, String team, int amount) { sendIconUpdate?.Invoke(this, new TypeBuffInformation(type, team, amount)); }
+    public void SendTypeBuff(TypeAndClassHandler.unitType type, string team, int amount) { sendTypeBuff?.Invoke(this, new TypeBuffInformation(type, team, amount)); }
+    public void SendIconUpdate(TypeAndClassHandler.unitType type, string team, int amount) { sendIconUpdate?.Invoke(this, new TypeBuffInformation(type, team, amount)); }
 }
