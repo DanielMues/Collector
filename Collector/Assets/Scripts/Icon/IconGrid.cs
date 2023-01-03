@@ -23,6 +23,8 @@ public class IconGrid : MonoBehaviour
             for (int y = 0; y < cellAmountY; y++)
             {
                 Vector3 position = iconBar.mapGrid[x, y].centerPosition;
+                GameObject Tile = GameObject.Instantiate(backgroundTilePrefab);
+                Tile.transform.position = position;
             }
         }
         typeAndClassEventHandler = TypeAndClassEventHandler.instance;
