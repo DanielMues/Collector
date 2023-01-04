@@ -61,7 +61,7 @@ public class InventoryMap: MonoBehaviour
 
     private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
-        if (map.IsPositionOnMap(args.worldPosition))
+        if (map.IsPositionOnMap(args.worldPosition, 0, cellAmountX, 0 , cellAmountY))
         {
             try
             {
@@ -81,7 +81,7 @@ public class InventoryMap: MonoBehaviour
 
     private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
     {
-        if (map.IsPositionOnMap(args.worldPosition))
+        if (map.IsPositionOnMap(args.worldPosition, 0, cellAmountX, 0, cellAmountY))
         {
             try
             {
