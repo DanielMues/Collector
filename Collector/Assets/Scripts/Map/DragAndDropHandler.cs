@@ -12,7 +12,8 @@ public class DragAndDropHandler : MonoBehaviour
     {
         customEventHandler = CustomEventHandler.instance;
         customEventHandler.UnitGotClicked += UnitGotClicked;
-        customEventHandler.SwapUnit += SwapUnits; 
+        customEventHandler.SwapUnit += SwapUnits;
+        customEventHandler.UnitCouldNotBePlaced += UnitCouldNotBePlaced;
         selectedUnit = null;
     }
 
@@ -46,6 +47,12 @@ public class DragAndDropHandler : MonoBehaviour
     }
 
     private void SwapUnits(object sender, CustomEventHandler.UnitInformation args)
+    {
+        selectedUnit = args.unit;
+        mousePositionOffset = selectedUnit.transform.position - GetMouseWorldPosition();
+    }
+
+    private void UnitCouldNotBePlaced(object sender, CustomEventHandler.UnitInformation args)
     {
         selectedUnit = args.unit;
         mousePositionOffset = selectedUnit.transform.position - GetMouseWorldPosition();

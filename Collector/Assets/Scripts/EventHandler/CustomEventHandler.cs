@@ -51,4 +51,11 @@ public class CustomEventHandler : MonoBehaviour
     {
         DragAndDropSwitch?.Invoke(this, new EventArgs());
     }
+
+    public event EventHandler<UnitInformation> UnitCouldNotBePlaced;
+
+    public void UnitCouldNotBeSet(GameObject unit, Vector3 worldPosition)
+    {
+        UnitCouldNotBePlaced?.Invoke(this, new UnitInformation { unit = unit, worldPosition = worldPosition });
+    }
 }

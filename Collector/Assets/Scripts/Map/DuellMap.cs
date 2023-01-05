@@ -121,6 +121,10 @@ public class DuellMap : MonoBehaviour
                 Debug.LogWarning("Cant place Unit out of Range");
             }
         }
+        else
+        {
+            customEventHandler.UnitCouldNotBeSet(args.unit, args.worldPosition);
+        }
     }
 
     private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
