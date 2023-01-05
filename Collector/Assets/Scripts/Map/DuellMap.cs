@@ -95,7 +95,7 @@ public class DuellMap : MonoBehaviour
 
     private void PlaceUnit(object sender, CustomEventHandler.UnitInformation args)
     {
-        if (map.IsPositionOnMap(args.worldPosition, 0 , xSize/2, 0, ySize))
+        if (map.IsPositionOnMap(args.worldPosition, 0, xSize / 2, 0, ySize))
         {
             try
             {
@@ -105,6 +105,7 @@ public class DuellMap : MonoBehaviour
                     map.SetUnit(args.unit, args.worldPosition);
                     typeAndClassEventHandler.setUnitTypeAndClass(args.unit.GetComponent<UnitStats>().GetFirstUnitType(), args.unit.GetComponent<UnitStats>().GetSecondUnitType(), args.unit.GetComponent<UnitStats>().GetThirdUnitType(), args.unit.GetComponent<UnitStats>().GetTeam());
                     args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+                    customEventHandler.UnitSet();
                 }
                 else
                 {
@@ -121,15 +122,11 @@ public class DuellMap : MonoBehaviour
                 Debug.LogWarning("Cant place Unit out of Range");
             }
         }
-        else
-        {
-            customEventHandler.UnitCouldNotBeSet(args.unit, args.worldPosition);
-        }
     }
 
     private void DeleteUnitOnField(object sender, CustomEventHandler.UnitInformation args)
     {
-        if (map.IsPositionOnMap(args.worldPosition, 0 , xSize, 0, ySize))
+        if (map.IsPositionOnMap(args.worldPosition, 0, xSize, 0, ySize))
         {
             try
             {

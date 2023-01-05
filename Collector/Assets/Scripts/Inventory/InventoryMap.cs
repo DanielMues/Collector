@@ -70,6 +70,14 @@ public class InventoryMap: MonoBehaviour
                 {
                     map.SetUnit(args.unit, args.worldPosition);
                     args.unit.transform.position = map.GetCenteredPosition(args.worldPosition);
+                    customEventHandler.UnitSet();
+                }
+                else
+                {
+                    map.SetUnit(args.unit, args.worldPosition);
+                    Vector3 currentMapPosition = map.GetCenteredPosition(args.worldPosition);
+                    args.unit.transform.position = currentMapPosition;
+                    customEventHandler.SwapSelectedUnit(currentUnit, currentMapPosition);
                 }
             }
             catch (IndexOutOfRangeException)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DragAndDropHandler : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class DragAndDropHandler : MonoBehaviour
         customEventHandler = CustomEventHandler.instance;
         customEventHandler.UnitGotClicked += UnitGotClicked;
         customEventHandler.SwapUnit += SwapUnits;
-        customEventHandler.UnitCouldNotBePlaced += UnitCouldNotBePlaced;
+        customEventHandler.UnitPlaced += UnitPlaced;
         selectedUnit = null;
     }
 
@@ -41,7 +42,6 @@ public class DragAndDropHandler : MonoBehaviour
         }
         else if (selectedUnit == args.unit)
         {
-            selectedUnit = null;
             customEventHandler.SendPlaceUnit(args.unit, args.unit.transform.position);
         }
     }
@@ -52,9 +52,8 @@ public class DragAndDropHandler : MonoBehaviour
         mousePositionOffset = selectedUnit.transform.position - GetMouseWorldPosition();
     }
 
-    private void UnitCouldNotBePlaced(object sender, CustomEventHandler.UnitInformation args)
+    private void UnitPlaced(object sender, EventArgs args)
     {
-        selectedUnit = args.unit;
-        mousePositionOffset = selectedUnit.transform.position - GetMouseWorldPosition();
+        selectedUnit = null;
     }
 }
