@@ -18,4 +18,4 @@ MonoBehaviour:
   movespeed: 1
   attackDamage: 1
   range: 1
-  team: Player
+  team: Enemy

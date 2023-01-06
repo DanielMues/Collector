@@ -43,7 +43,7 @@ public class InventoryMap: MonoBehaviour
         {
             if (mutant != null && mutant.mutantPrefab != null)
             {
-                GameObject newUnit = Instantiate(mutant.mutantPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                GameObject newUnit = mutant.InstantiateMutant();
                 map.SetUnit(newUnit, currentX, currentY);
                 newUnit.transform.position = map.GetCenteredPosition(currentX, currentY);
                 if (currentX < cellAmountX && currentY != cellAmountY)
